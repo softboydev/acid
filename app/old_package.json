@@ -1,0 +1,35 @@
+{
+  "name": "ACID",
+  "version": "0.1.1",
+  "description": "ACID is short for Algorithms Create Image Data. ACID is a general purpose video synthesizer.",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron-forge start",
+    "package": "electron-forge package",
+    "make": "electron-forge make",
+    "make-mac": "npx @electron-forge/cli make --platform darwin",
+    "make-linux": "npx @electron-forge/cli make --platform linux",
+    "make-win": "npx @electron-forge/cli make --platform win32"
+  },
+  "repository": "https://github.com/electron/electron-quick-start",
+  "keywords": [],
+  "author": "Johannes Hassenstein",
+  "license": "CC0-1.0",
+  "devDependencies": {
+    "@electron-forge/cli": "^6.0.0-beta.54",
+    "@electron-forge/maker-deb": "^6.0.0-beta.54",
+    "@electron-forge/maker-dmg": "^6.0.0-beta.54",
+    "@electron-forge/maker-rpm": "^6.0.0-beta.54",
+    "@electron-forge/maker-squirrel": "^6.0.0-beta.54",
+    "@electron-forge/maker-zip": "^6.0.0-beta.54",
+    "electron": "^11.2.2"
+  },
+  "dependencies": {
+    "electron-dl": "^3.0.2",
+    "electron-json-storage": "^4.3.0",
+    "electron-squirrel-startup": "^1.0.0"
+  },
+  "config": {
+    "forge": "./forge.config.js"
+  }
+}

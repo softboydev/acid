@@ -1,0 +1,26 @@
+{
+  "name": "ACID",
+  "version": "0.1.1",
+  "description": "ACID is short for Algorithms Create Image Data. ACID is a general purpose video synthesizer.",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build_osx": "electron-packager . ACID --platform=darwin --arch=x64 --out ~/Documents/ --overwrite --icon=icon.icns ; echo 'Built for OSX'",
+    "build_linux": "electron-packager . ACID --platform=linux  --arch=x64 --out ~/Documents/ --overwrite --icon=icon.ico ; echo 'Built for LINUX'",
+    "build_win": "electron-packager . ACID --platform=win32  --arch=x64 --out ~/Documents/ --overwrite --icon=icon.ico ; echo 'Built for WIN'"
+  },
+  "repository": "https://github.com/electron/electron-quick-start",
+  "keywords": [],
+  "author": "Johannes Hassenstein",
+  "license": "CC0-1.0",
+  "devDependencies": {
+    "electron": "^11.3.0",
+    "electron-packager": "^15.1.0"
+  },
+  "dependencies": {
+    "electron-json-storage": "^4.3.0"
+  },
+  "config": {
+    "forge": "./forge.config.js"
+  }
+}
