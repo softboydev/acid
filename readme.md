@@ -47,6 +47,7 @@ I tested the builds on:
 
 - Mac OS/mac: macOS Catilina, 10.15.6, 16GB RAM, 2.8 GHz Quad-Core Intel Core i7, Intel HD Graphics 630 1536 MB
 - Linux/deb: Linux Mint Cinnamon, 4.0.10 (4.15.0-20-generic Kernel), 4GB RAM, 1.1GHz * 7, Intel Pentium Silver N5000, Intel Corporation Device 3184 
+- Window/win32: Windows 10 Home, 1803, 4GB RAM, 1.1GHz * 7, Intel Pentium Silver N5000, Intel Corporation Device 3184 
 
 To download a build for your platform head over to [acidatm.itch.io/acid](https://acidatm.itch.io/acid) and download a build there. The download is free, there is only an optional donation.
 

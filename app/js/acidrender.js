@@ -27,6 +27,7 @@ function ACIDRENDER(storage,ipc,canvas,mothership){
     this.running = false
   }
   this.stop = function(){
+    this.running = false
     this.stopped = true
   }
   this.jump = function(n){
@@ -241,8 +242,11 @@ function ACIDRENDER(storage,ipc,canvas,mothership){
     this.ipc.on("requireStop", function () {
       this.stop()
     }.bind(this));
-    this.ipc.on("requireFramejump", function () {
+    this.ipc.on("requireOneFramejump", function () {
       this.jump(1)
+    }.bind(this));
+    this.ipc.on("requireTenFramesjump", function () {
+      this.jump(10)
     }.bind(this));
     window.addEventListener("resize",function(){
       this.resize()
