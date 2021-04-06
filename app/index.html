@@ -14,9 +14,25 @@
     <canvas id="canvas"></canvas>
     <div id="gui">
       <div id="tooltip">Test</div>
+
       <table>
           <tr>
             <th class="table-name" data-tooltip="settings">set</th>
+          </tr>
+          <tr>
+            <th>fps</th>
+            <td id="analyticsFPS">0</td>
+          </tr>
+          <tr>
+            <th>wid</th>
+            <td id="analyticsWidth">0</td>
+          </tr>
+          <tr>
+            <th>hei</th>
+            <td id="analyticsHeight">0</td>
+          </tr>
+          <tr>
+            <th>   </th>
           </tr>
           <tr>
             <th data-tooltip="defaultcolor">dcl</th>
@@ -27,18 +43,8 @@
             <td><span id="settings.defaultFx" data-options="drv,cmp,exp,rnd,bit"></span></td>
           </tr>
           <tr>
-            <th>   </th>
-          </tr>
-          <tr>
-            <th data-tooltip="settingsimage">img</th>
-          </tr>
-          <tr>
-            <th data-tooltip="framerate">frm</th>
-            <td><input type="range" data-is-setting="true" min="1" max="30" id="settings.framerate" data-no-buttons="true"></input></td>
-          </tr>
-          <tr>
-            <th data-tooltip="resolution">res</th>
-            <td><input type="range" min="1" max="999" step="1" id="render.resolution" data-no-buttons="true"></input></td>
+            <th data-tooltip="optimizefx">fx</th>
+            <td><span id="render.optimization.effects" data-options="on,off" data-customclass="fx-flag"></span></td>
           </tr>
           <tr>
             <th>   </th>
@@ -66,16 +72,144 @@
             <th data-tooltip="buttons">btn</th>
             <td><span id="settings.buttons" data-options="on,off"  data-customclass="ui-buttons-flag"></span></td>
           </tr>
+          <tr>
+            <th data-tooltip="dimensions">dim</th>
+            <td><span id="settings.showDimensions" data-options="on,off"  data-customclass="ui-dimensions-flag"></span></td>
+          </tr>
       </table>
       <table>
         <tr>
           <th class="table-name" data-tooltip="image">img</th>
         </tr>
         <tr>
-          <th  data-tooltip="engine">eng</th>
-          <td><span id="render.eng" data-options="s2d,c2d" data-customclass="engine"></span></td>
+          <th data-tooltip="framerate">frm</th>
+          <td><input type="range" data-is-setting="true" min="1" max="30" id="settings.framerate" data-no-buttons="true"></input></td>
         </tr>
         <tr>
+          <th data-tooltip="resolution">res</th>
+          <td><input type="range" min="1" max="999" step="1" id="render.resolution" data-no-buttons="true"></input></td>
+        </tr>
+        <tr>
+          <th data-tooltip="ratio"> bw</th>
+          <td><input type="range" min="0" max="999" step="1" id="render.a"></input></td>
+        </tr>
+        <tr>
+          <th data-tooltip="drive">drv</th>
+          <td><span id="typ" data-options="clp,mod,dyn"></span></td>
+        </tr>
+        <tr>
+          <th data-tooltip="optimizesubpixel">sub</th>
+          <td><span id="render.optimization.subpixels" data-options="on,off"></span></td>
+        </tr>
+        <!-- <tr>
+          <th data-tooltip="resolutionx">x  </th>
+          <td><input type="range" min="0" max="999" step="1" id="render.x"></input></td>
+        </tr>
+        <tr>
+          <th data-tooltip="resolutiony">y  </th>
+          <td><input type="range" min="0" max="999" step="1" id="render.y"></input></td>
+        </tr> -->
+        <tr>
+          <th>   </th>
+        </tr>
+        <tr>
+          <th data-tooltip="channel">rgb</th>
+        </tr>
+        <tr>
+          <th data-tooltip="channelr">r</th>
+          <td><input type="range" min="0" max="999" step="1" id="render.channels.r.base"></input></td>
+        </tr>
+        <tr>
+          <th data-tooltip="channelg">g</th>
+          <td><input type="range" min="0" max="999" step="1" id="render.channels.g.base"></input></td>
+        </tr>
+        <tr>
+          <th data-tooltip="channelb">b</th>
+          <td><input type="range" min="0" max="999" step="1" id="render.channels.b.base"></input></td>
+        </tr>
+        <tr>
+          <th>   </th>
+        </tr>
+        <tr>
+          <th data-tooltip="channelmod">mod</th>
+        </tr>
+        <tr>
+          <th data-tooltip="channelr">r</th>
+          <td><input type="range" min="0" max="999" step="1" id="render.channels.r.mod"></input></td>
+        </tr>
+        <tr>
+          <th data-tooltip="channelg">g</th>
+          <td><input type="range" min="0" max="999" step="1" id="render.channels.g.mod"></input></td>
+        </tr>
+        <tr>
+          <th data-tooltip="channelb">b</th>
+          <td><input type="range" min="0" max="999" step="1" id="render.channels.b.mod"></input></td>
+        </tr>
+        <tr>
+          <th>   </th>
+        </tr>
+        <tr>
+          <th data-tooltip="channelamp">amp</th>
+        </tr>
+        <tr>
+          <th id="render.channels.r.active" data-tooltip="channelr">r</th>
+          <td><input type="range" min="0" max="999" step="1" id="render.channels.r.amp"></input></td>
+        </tr>
+        <!-- <tr>
+          <th>amp</th>
+          <td><span id="render.channels.r.typ" data-options="clp,mod"></span></td>
+        </tr> -->
+        <tr>
+          <th id="render.channels.g.active" data-tooltip="channelr">g</th>
+          <td><input type="range" min="0" max="999" step="1" id="render.channels.g.amp"></input></td>
+        </tr>
+        <!-- <tr>
+          <th>amp</th>
+          <td><span id="render.channels.g.typ" data-options="clp,mod"></span></td>
+        </tr> -->
+        <tr>
+          <th  id="render.channels.b.active"data-tooltip="channelr">b</th>
+          <td><input type="range" min="0" max="999" step="1" id="render.channels.b.amp"></input></td>
+        </tr>
+        <!-- <tr>
+          <th>amp</th>
+          <td><span id="render.channels.b.typ" data-options="clp,mod"></span></td>
+        </tr> -->
+        <!-- <tr>
+          <th>   </th>
+        </tr>
+        <tr>
+          <th data-tooltip="channeltranslate">trn</th>
+        </tr>
+        <tr>
+          <th data-tooltip="channelr">r x</th>
+          <td><input type="range" min="0" max="999" step="1" id="render.channels.r.translation.x"></input></td>
+        </tr>
+        <tr>
+          <th data-tooltip="channelr">  y</th>
+          <td><input type="range" min="0" max="999" step="1" id="render.channels.r.translation.y"></input></td>
+        </tr>
+        <tr>
+          <th data-tooltip="channelg">g x</th>
+          <td><input type="range" min="0" max="999" step="1" id="render.channels.g.translation.x"></input></td>
+        </tr>
+        <tr>
+          <th data-tooltip="channelg">  y</th>
+          <td><input type="range" min="0" max="999" step="1" id="render.channels.g.translation.y"></input></td>
+        </tr>
+        <tr>
+          <th data-tooltip="channelb">b x</th>
+          <td><input type="range" min="0" max="999" step="1" id="render.channels.b.translation.x"></input></td>
+        </tr>
+        <tr>
+          <th data-tooltip="channelb">  y</th>
+          <td><input type="range" min="0" max="999" step="1" id="render.channels.b.translation.y"></input></td>
+        </tr> -->
+        <!-- <tr>
+          <th  data-tooltip="engine">eng</th>
+          <td><span id="render.eng" data-options="s2d,c2d" data-customclass="engine"></span></td>
+        </tr> -->
+        <!-- <tr>
           <th id="render.hsl"  data-tooltip="colormode">clr</th>
           <td><span id="render.mod" data-options="grd,ndx,rgb,hsl" data-customclass="colormode"></span></td>
         </tr>
@@ -88,8 +222,8 @@
           <td><input type="color" data-is-setting="true" id="render.bck"></input></td>
         </tr>
         <tr class="for-colormode for-colormode-ndx" id="render.clrs" data-template="color" >
-        </tr>
-        <tr class="for-engine for-engine-c2d">
+        </tr> -->
+        <!-- <tr class="for-engine for-engine-c2d">
           <th>   </th>
         </tr>
         <tr class="for-engine for-engine-c2d">
@@ -98,8 +232,8 @@
         <tr class="for-engine for-engine-c2d">
           <th data-tooltip="colormode">clr</th>
           <td><span id="render.sec.mod" data-options="grd,ndx,rgb,hsl" data-customclass="sec-colormode"></span></td>
-        </tr>
-        <tr class="for-engine for-engine-c2d for-sec-colormode for-sec-colormode-grd for-sec-colormode-rgb for-sec-colormode-hsl">
+        </tr> -->
+        <!-- <tr class="for-engine for-engine-c2d for-sec-colormode for-sec-colormode-grd for-sec-colormode-rgb for-sec-colormode-hsl">
           <th data-tooltip="primarycolor">prm</th>
           <td><input type="color" data-is-setting="true" id="render.sec.prm"></input></td>
         </tr>
@@ -108,36 +242,29 @@
           <td><input type="color" data-is-setting="true" id="render.sec.bck"></input></td>
         </tr>
         <tr class="for-engine for-engine-c2d for-sec-colormode for-sec-colormode-ndx" id="render.sec.clrs" data-template="color" >
-        </tr>
-        <tr>
+        </tr> -->
+        <!-- <tr>
           <th>   </th>
-        </tr>
-        <tr>
+        </tr> -->
+        <!-- <tr>
           <th  data-tooltip="renderscale">res</th>
         </tr>
-        <tr>
-          <th data-tooltip="resolutionx">x  </th>
-          <td><input type="range" min="0" max="999" step="1" id="render.x"></input></td>
-        </tr>
-        <tr>
-          <th data-tooltip="resolutiony">y  </th>
-          <td><input type="range" min="0" max="999" step="1" id="render.y"></input></td>
-        </tr>
+
         <tr class="for-engine for-engine-c2d">
           <th data-tooltip="rotation">rot</th>
           <td><input type="range" min="0" max="999" step="1" id="render.r"></input></td>
         </tr>
         <tr>
           <th>   </th>
-        </tr>
-        <tr>
+        </tr> -->
+        <!-- <tr>
           <th data-tooltip="modify">mod</th>
         </tr>
         <tr>
           <th data-tooltip="modcolor">clr</th>
           <td><input type="range" min="0" max="999" step="1" id="render.clr"></input></td>
-        </tr>
-        <tr class="for-engine for-engine-c2d">
+        </tr> -->
+        <!-- <tr class="for-engine for-engine-c2d">
           <th data-tooltip="modseccolor">sec</th>
           <td><input type="range" min="0" max="999" step="1" id="render.sec.clr"></input></td>
         </tr>
@@ -214,9 +341,9 @@
           <td><input type="range" min="0" max="999" step="1" id="render.rad.bl"></input></td>
           <td>   </td>
           <td><input type="range" min="0" max="999" step="1" id="render.rad.dbl"></input></td>
-        </tr>
+        </tr> -->
       </table>
-      <table>
+      <!-- <table>
        <tr>
          <th class="table-name" data-tooltip="bus">bus</th>
        </tr>
@@ -228,42 +355,42 @@
          <th data-tooltip="drive">drv</th>
          <td><span id="typ" data-options="clp,mod,dyn"></span></td>
        </tr>
-       <tr>
+       <tr class="for-fx-active">
          <th>   </th>
        </tr>
-       <tr>
+       <tr class="for-fx-active">
          <th data-tooltip="fx"> fx</th>
        </tr>
-       <tr>
+       <tr class="for-fx-active">
          <th data-tooltip="fxbit">bit</th>
          <td class="range"><input type="range" min="0" max="999" step="1" id="fx.bit"></input></td>
        </tr>
-       <tr>
+       <tr class="for-fx-active">
          <th data-tooltip="fxcmp">cmp</th>
          <td class="range"><input type="range" min="0" max="999" step="1" id="fx.cmp"></input></td>
        </tr>
-       <tr>
+       <tr class="for-fx-active">
          <th data-tooltip="fxexp">exp</th>
          <td class="range"><input type="range" min="0" max="999" step="1" id="fx.exp"></input></td>
        </tr>
-       <tr>
+       <tr class="for-fx-active">
          <th data-tooltip="fxrnd">rnd</th>
          <td class="range"><input type="range" min="0" max="999" step="1" id="fx.rnd"></input></td>
        </tr>
-       <tr>
+       <tr class="for-fx-active">
          <th data-tooltip="fxdrv">drv</th>
          <td class="range"><input type="range" min="0" max="999" step="1" id="fx.drv"></input></td>
        </tr>
-       <tr id="fx.c" data-template="fx">
+       <tr class="for-fx-active" id="fx.c" data-template="fx">
        </tr>
-      </table>
+      </table> -->
       <table>
        <tr>
-         <th class="table-name" id="osc.0.run"  data-tooltip="oscilator">os1</th>
+         <th class="table-name" id="osc.0.run" data-tooltip="oscilator">os1</th>
        </tr>
        <tr>
          <th data-tooltip="ostyp">typ</th>
-         <td><span id="osc.0.typ" data-customclass="osc0-type" data-options="off,prl,plx,osc,sqr,saw,tri,sin"></span></td>
+         <td><span id="osc.0.typ" data-customclass="osc0-type" data-options="off,prl,plx,osc,sqr,pwm,saw,tri,sin"></span></td>
        </tr>
        <tr>
          <th data-tooltip="osmix">mix</th>
@@ -288,10 +415,31 @@
          <th data-tooltip="oshpf">hpf</th>
          <td class="range"><input type="range" min="0" max="999" step="1" id="osc.0.filter.hpf"></input></td>
        </tr>
-       <tr  class="for-osc0-type for-osc0-type-osc for-osc0-type-sqr for-osc0-type-saw for-osc0-type-tri for-osc0-type-sin for-osc0-type-prl for-osc0-type-plx">
+       <tr>
          <th>   </th>
        </tr>
-       <tr class="for-osc0-type for-osc0-type-osc">
+       <tr>
+         <th>rgb</th>
+       </tr>
+       <tr>
+         <th data-tooltip="channel">r</th>
+         <td class="range"><input type="range" min="0" max="999" step="1" id="osc.0.channels.r"></input></td>
+       </tr>
+       <tr>
+         <th data-tooltip="channel">g</th>
+         <td class="range"><input type="range" min="0" max="999" step="1" id="osc.0.channels.g"></input></td>
+       </tr>
+       <tr>
+         <th data-tooltip="channel">b</th>
+         <td class="range"><input type="range" min="0" max="999" step="1" id="osc.0.channels.b"></input></td>
+       </tr>
+       <tr>
+         <th>   </th>
+       </tr>
+       <tr>
+         <th>osc</th>
+       </tr>
+       <tr class="for-osc0-type for-osc0-type-osc for-osc0-type-pwm">
          <th data-tooltip="oscen">cen</th>
          <td class="range"><input type="range" min="0" max="999" step="1" id="osc.0.config.z.cen"></input></td>
        </tr>
@@ -299,19 +447,19 @@
          <th data-tooltip="osshp">shp</th>
          <td class="range"><input type="range" min="0" max="999" step="1" id="osc.0.config.z.shp"></input></td>
        </tr>
-       <tr class="for-osc0-type for-osc0-type-osc for-osc0-type-osc for-osc0-type-sqr for-osc0-type-saw for-osc0-type-tri for-osc0-type-sin">
+       <tr class="for-osc0-type for-osc0-type-osc for-osc0-type-osc for-osc0-type-sqr for-osc0-type-pwm for-osc0-type-saw for-osc0-type-tri for-osc0-type-sin">
          <th data-tooltip="osmod">rot</th>
          <td class="range"><input type="range" min="0" max="999" step="1" id="osc.0.config.z.mod"></input></td>
        </tr>
-       <tr class="for-osc0-type for-osc0-type-osc for-osc0-type-sqr for-osc0-type-saw for-osc0-type-tri for-osc0-type-sin for-osc0-type-prl for-osc0-type-plx">
+       <tr class="for-osc0-type for-osc0-type-osc for-osc0-type-sqr for-osc0-type-pwm for-osc0-type-saw for-osc0-type-tri for-osc0-type-sin for-osc0-type-prl for-osc0-type-plx">
          <th data-tooltip="osfrq">frq</th>
          <td class="range"><input type="range" min="0" max="999" step="1" id="osc.0.config.z.frq"></input></td>
        </tr>
-       <tr class="for-osc0-type for-osc0-type-osc for-osc0-type-sqr for-osc0-type-saw for-osc0-type-tri for-osc0-type-sin">
+       <tr class="for-osc0-type for-osc0-type-osc for-osc0-type-sqr for-osc0-type-pwm for-osc0-type-saw for-osc0-type-tri for-osc0-type-sin">
          <th data-tooltip="osspd">spd</th>
          <td class="range"><input type="range" min="0" max="999" step="1" id="osc.0.config.z.len"></input></td>
        </tr>
-       <tr class="for-osc0-type for-osc0-type-osc for-osc0-type-sqr for-osc0-type-saw for-osc0-type-tri for-osc0-type-sin for-osc0-type-prl for-osc0-type-plx">
+       <tr class="for-osc0-type for-osc0-type-osc for-osc0-type-sqr for-osc0-type-pwm for-osc0-type-saw for-osc0-type-tri for-osc0-type-sin for-osc0-type-prl for-osc0-type-plx">
          <th data-tooltip="osoff">off</th>
          <td class="range"><input type="range" min="0" max="999" step="1" id="osc.0.config.z.off"></input></td>
        </tr>
@@ -343,33 +491,33 @@
          <th data-tooltip="osoff">off</th>
          <td class="range"><input type="range" min="0" max="999" step="1" id="osc.0.config.y.off"></input></td>
        </tr>
-       <tr>
+       <tr class="for-fx-active">
          <th>   </th>
        </tr>
-       <tr>
-         <th data-tooltip="fx"> fx</th>
+       <tr class="for-fx-active">
+         <th data-tooltip="fx">fx</th>
        </tr>
-       <tr>
+       <tr class="for-fx-active">
          <th data-tooltip="fxbit">bit</th>
          <td class="range"><input type="range" min="0" max="999" step="1" id="osc.0.fx.bit"></input></td>
        </tr>
-       <tr>
+       <tr class="for-fx-active">
          <th data-tooltip="fxcmp">cmp</th>
          <td class="range"><input type="range" min="0" max="999" step="1" id="osc.0.fx.cmp"></input></td>
        </tr>
-       <tr>
+       <tr class="for-fx-active">
          <th data-tooltip="fxexp">exp</th>
          <td class="range"><input type="range" min="0" max="999" step="1" id="osc.0.fx.exp"></input></td>
        </tr>
-       <tr>
+       <tr class="for-fx-active">
          <th data-tooltip="fxrnd">rnd</th>
          <td class="range"><input type="range" min="0" max="999" step="1" id="osc.0.fx.rnd"></input></td>
        </tr>
-       <tr>
+       <tr class="for-fx-active">
          <th data-tooltip="fxdrv">drv</th>
          <td class="range"><input type="range" min="0" max="999" step="1" id="osc.0.fx.drv"></input></td>
        </tr>
-      <tr id="osc.0.fx.c" data-template="fx">
+      <tr class="for-fx-active" id="osc.0.fx.c" data-template="fx">
       </tr>
     </table>
 
@@ -379,7 +527,7 @@
      </tr>
      <tr>
        <th data-tooltip="ostyp">typ</th>
-       <td><span id="osc.1.typ" data-customclass="osc1-type" data-options="off,prl,plx,osc,sqr,saw,tri,sin"></span></td>
+       <td><span id="osc.1.typ" data-customclass="osc1-type" data-options="off,prl,plx,osc,sqr,pwm,saw,tri,sin"></span></td>
      </tr>
      <tr>
        <th data-tooltip="osmix">mix</th>
@@ -404,10 +552,35 @@
        <th data-tooltip="oshpf">hpf</th>
        <td class="range"><input type="range" min="0" max="999" step="1" id="osc.1.filter.hpf"></input></td>
      </tr>
-     <tr  class="for-osc1-type for-osc1-type-osc for-osc1-type-sqr for-osc1-type-saw for-osc1-type-tri for-osc1-type-sin for-osc1-type-prl for-osc1-type-plx">
+     <tr>
        <th>   </th>
      </tr>
-     <tr class="for-osc1-type for-osc1-type-osc">
+     <tr>
+       <th>rgb</th>
+     </tr>
+     <tr>
+       <th data-tooltip="channel">r</th>
+       <td class="range"><input type="range" min="0" max="999" step="1" id="osc.1.channels.r"></input></td>
+     </tr>
+     <tr>
+       <th data-tooltip="channel">g</th>
+       <td class="range"><input type="range" min="0" max="999" step="1" id="osc.1.channels.g"></input></td>
+     </tr>
+     <tr>
+       <th data-tooltip="channel">b</th>
+       <td class="range"><input type="range" min="0" max="999" step="1" id="osc.1.channels.b"></input></td>
+     </tr>
+     <!-- <tr>
+       <th data-tooltip="channel">a</th>
+       <td class="range"><input type="range" min="0" max="999" step="1" id="osc.1.channels.a"></input></td>
+     </tr> -->
+     <tr>
+       <th>   </th>
+     </tr>
+     <tr>
+       <th>osc</th>
+     </tr>
+     <tr class="for-osc1-type for-osc1-type-osc for-osc1-type-pwm">
        <th data-tooltip="oscen">cen</th>
        <td class="range"><input type="range" min="0" max="999" step="1" id="osc.1.config.z.cen"></input></td>
      </tr>
@@ -415,19 +588,19 @@
        <th data-tooltip="osshp">shp</th>
        <td class="range"><input type="range" min="0" max="999" step="1" id="osc.1.config.z.shp"></input></td>
      </tr>
-     <tr class="for-osc1-type for-osc1-type-osc for-osc1-type-osc for-osc1-type-sqr for-osc1-type-saw for-osc1-type-tri for-osc1-type-sin">
+     <tr class="for-osc1-type for-osc1-type-osc for-osc1-type-osc for-osc1-type-sqr for-osc1-type-pwm for-osc1-type-saw for-osc1-type-tri for-osc1-type-sin">
        <th data-tooltip="osmod">rot</th>
        <td class="range"><input type="range" min="0" max="999" step="1" id="osc.1.config.z.mod"></input></td>
      </tr>
-     <tr class="for-osc1-type for-osc1-type-osc for-osc1-type-sqr for-osc1-type-saw for-osc1-type-tri for-osc1-type-sin for-osc1-type-prl for-osc1-type-plx">
+     <tr class="for-osc1-type for-osc1-type-osc for-osc1-type-sqr for-osc1-type-pwm for-osc1-type-saw for-osc1-type-tri for-osc1-type-sin for-osc1-type-prl for-osc1-type-plx">
        <th data-tooltip="osfrq">frq</th>
        <td class="range"><input type="range" min="0" max="999" step="1" id="osc.1.config.z.frq"></input></td>
      </tr>
-     <tr class="for-osc1-type for-osc1-type-osc for-osc1-type-sqr for-osc1-type-saw for-osc1-type-tri for-osc1-type-sin">
+     <tr class="for-osc1-type for-osc1-type-osc for-osc1-type-sqr for-osc1-type-pwm for-osc1-type-saw for-osc1-type-tri for-osc1-type-sin">
        <th data-tooltip="osspd">spd</th>
        <td class="range"><input type="range" min="0" max="999" step="1" id="osc.1.config.z.len"></input></td>
      </tr>
-     <tr class="for-osc1-type for-osc1-type-osc for-osc1-type-sqr for-osc1-type-saw for-osc1-type-tri for-osc1-type-sin for-osc1-type-prl for-osc1-type-plx">
+     <tr class="for-osc1-type for-osc1-type-osc for-osc1-type-sqr for-osc1-type-pwm for-osc1-type-saw for-osc1-type-tri for-osc1-type-sin for-osc1-type-prl for-osc1-type-plx">
        <th data-tooltip="osoff">off</th>
        <td class="range"><input type="range" min="0" max="999" step="1" id="osc.1.config.z.off"></input></td>
      </tr>
@@ -459,33 +632,33 @@
        <th data-tooltip="osoff">off</th>
        <td class="range"><input type="range" min="0" max="999" step="1" id="osc.1.config.y.off"></input></td>
      </tr>
-     <tr>
+     <tr class="for-fx-active">
        <th>   </th>
      </tr>
-     <tr>
-       <th data-tooltip="fx"> fx</th>
+     <tr class="for-fx-active">
+       <th data-tooltip="fx">fx</th>
      </tr>
-     <tr>
+     <tr class="for-fx-active">
        <th data-tooltip="fxbit">bit</th>
        <td class="range"><input type="range" min="0" max="999" step="1" id="osc.1.fx.bit"></input></td>
      </tr>
-     <tr>
+     <tr class="for-fx-active">
        <th data-tooltip="fxcmp">cmp</th>
        <td class="range"><input type="range" min="0" max="999" step="1" id="osc.1.fx.cmp"></input></td>
      </tr>
-     <tr>
+     <tr class="for-fx-active">
        <th data-tooltip="fxexp">exp</th>
        <td class="range"><input type="range" min="0" max="999" step="1" id="osc.1.fx.exp"></input></td>
      </tr>
-     <tr>
+     <tr class="for-fx-active">
        <th data-tooltip="fxrnd">rnd</th>
        <td class="range"><input type="range" min="0" max="999" step="1" id="osc.1.fx.rnd"></input></td>
      </tr>
-     <tr>
+     <tr class="for-fx-active">
        <th data-tooltip="fxdrv">drv</th>
        <td class="range"><input type="range" min="0" max="999" step="1" id="osc.1.fx.drv"></input></td>
      </tr>
-    <tr id="osc.1.fx.c" data-template="fx">
+    <tr class="for-fx-active" id="osc.1.fx.c" data-template="fx">
     </tr>
   </table>
 
@@ -495,7 +668,7 @@
    </tr>
    <tr>
      <th data-tooltip="ostyp">typ</th>
-     <td><span id="osc.2.typ" data-customclass="osc2-type" data-options="off,prl,plx,osc,sqr,saw,tri,sin"></span></td>
+     <td><span id="osc.2.typ" data-customclass="osc2-type" data-options="off,prl,plx,osc,sqr,pwm,saw,tri,sin"></span></td>
    </tr>
    <tr>
      <th data-tooltip="osmix">mix</th>
@@ -520,10 +693,35 @@
      <th data-tooltip="oshpf">hpf</th>
      <td class="range"><input type="range" min="0" max="999" step="1" id="osc.2.filter.hpf"></input></td>
    </tr>
-   <tr  class="for-osc2-type for-osc2-type-osc for-osc2-type-sqr for-osc2-type-saw for-osc2-type-tri for-osc2-type-sin for-osc2-type-prl for-osc2-type-plx">
+   <tr>
      <th>   </th>
    </tr>
-   <tr class="for-osc2-type for-osc2-type-osc">
+   <tr>
+     <th>rgb</th>
+   </tr>
+   <tr>
+     <th data-tooltip="channel">r</th>
+     <td class="range"><input type="range" min="0" max="999" step="1" id="osc.2.channels.r"></input></td>
+   </tr>
+   <tr>
+     <th data-tooltip="channel">g</th>
+     <td class="range"><input type="range" min="0" max="999" step="1" id="osc.2.channels.g"></input></td>
+   </tr>
+   <tr>
+     <th data-tooltip="channel">b</th>
+     <td class="range"><input type="range" min="0" max="999" step="1" id="osc.2.channels.b"></input></td>
+   </tr>
+   <!-- <tr>
+     <th data-tooltip="channel">a</th>
+     <td class="range"><input type="range" min="0" max="999" step="1" id="osc.2.channels.a"></input></td>
+   </tr> -->
+   <tr>
+     <th>   </th>
+   </tr>
+   <tr>
+     <th>osc</th>
+   </tr>
+   <tr class="for-osc2-type for-osc2-type-osc for-osc2-type-pwm">
      <th data-tooltip="oscen">cen</th>
      <td class="range"><input type="range" min="0" max="999" step="1" id="osc.2.config.z.cen"></input></td>
    </tr>
@@ -531,19 +729,19 @@
      <th data-tooltip="osshp">shp</th>
      <td class="range"><input type="range" min="0" max="999" step="1" id="osc.2.config.z.shp"></input></td>
    </tr>
-   <tr class="for-osc2-type for-osc2-type-osc for-osc2-type-osc for-osc2-type-sqr for-osc2-type-saw for-osc2-type-tri for-osc2-type-sin">
+   <tr class="for-osc2-type for-osc2-type-osc for-osc2-type-osc for-osc2-type-sqr for-osc2-type-pwm for-osc2-type-saw for-osc2-type-tri for-osc2-type-sin">
      <th data-tooltip="osmod">rot</th>
      <td class="range"><input type="range" min="0" max="999" step="1" id="osc.2.config.z.mod"></input></td>
    </tr>
-   <tr class="for-osc2-type for-osc2-type-osc for-osc2-type-sqr for-osc2-type-saw for-osc2-type-tri for-osc2-type-sin for-osc2-type-prl for-osc2-type-plx">
+   <tr class="for-osc2-type for-osc2-type-osc for-osc2-type-sqr for-osc2-type-pwm for-osc2-type-saw for-osc2-type-tri for-osc2-type-sin for-osc2-type-prl for-osc2-type-plx">
      <th data-tooltip="osfrq">frq</th>
      <td class="range"><input type="range" min="0" max="999" step="1" id="osc.2.config.z.frq"></input></td>
    </tr>
-   <tr class="for-osc2-type for-osc2-type-osc for-osc2-type-sqr for-osc2-type-saw for-osc2-type-tri for-osc2-type-sin">
+   <tr class="for-osc2-type for-osc2-type-osc for-osc2-type-sqr for-osc2-type-pwm for-osc2-type-saw for-osc2-type-tri for-osc2-type-sin">
      <th data-tooltip="osspd">spd</th>
      <td class="range"><input type="range" min="0" max="999" step="1" id="osc.2.config.z.len"></input></td>
    </tr>
-   <tr class="for-osc2-type for-osc2-type-osc for-osc2-type-sqr for-osc2-type-saw for-osc2-type-tri for-osc2-type-sin for-osc2-type-prl for-osc2-type-plx">
+   <tr class="for-osc2-type for-osc2-type-osc for-osc2-type-sqr for-osc2-type-pwm for-osc2-type-saw for-osc2-type-tri for-osc2-type-sin for-osc2-type-prl for-osc2-type-plx">
      <th data-tooltip="osoff">off</th>
      <td class="range"><input type="range" min="0" max="999" step="1" id="osc.2.config.z.off"></input></td>
    </tr>
@@ -575,33 +773,33 @@
      <th data-tooltip="osoff">off</th>
      <td class="range"><input type="range" min="0" max="999" step="1" id="osc.2.config.y.off"></input></td>
    </tr>
-   <tr>
+   <tr class="for-fx-active">
      <th>   </th>
    </tr>
-   <tr>
-     <th data-tooltip="fx"> fx</th>
+   <tr class="for-fx-active">
+     <th data-tooltip="fx">fx</th>
    </tr>
-   <tr>
+   <tr class="for-fx-active">
      <th data-tooltip="fxbit">bit</th>
      <td class="range"><input type="range" min="0" max="999" step="1" id="osc.2.fx.bit"></input></td>
    </tr>
-   <tr>
+   <tr class="for-fx-active">
      <th data-tooltip="fxcmp">cmp</th>
      <td class="range"><input type="range" min="0" max="999" step="1" id="osc.2.fx.cmp"></input></td>
    </tr>
-   <tr>
+   <tr class="for-fx-active">
      <th data-tooltip="fxexp">exp</th>
      <td class="range"><input type="range" min="0" max="999" step="1" id="osc.2.fx.exp"></input></td>
    </tr>
-   <tr>
+   <tr class="for-fx-active">
      <th data-tooltip="fxrnd">rnd</th>
      <td class="range"><input type="range" min="0" max="999" step="1" id="osc.2.fx.rnd"></input></td>
    </tr>
-   <tr>
+   <tr class="for-fx-active">
      <th data-tooltip="fxdrv">drv</th>
      <td class="range"><input type="range" min="0" max="999" step="1" id="osc.2.fx.drv"></input></td>
    </tr>
-  <tr id="osc.2.fx.c" data-template="fx">
+  <tr class="for-fx-active" id="osc.2.fx.c" data-template="fx">
   </tr>
 </table>
 
@@ -611,7 +809,7 @@
  </tr>
  <tr>
    <th data-tooltip="ostyp">typ</th>
-   <td><span id="osc.3.typ" data-customclass="osc3-type" data-options="off,prl,plx,osc,sqr,saw,tri,sin"></span></td>
+   <td><span id="osc.3.typ" data-customclass="osc3-type" data-options="off,prl,plx,osc,sqr,pwm,saw,tri,sin"></span></td>
  </tr>
  <tr>
    <th data-tooltip="osmix">mix</th>
@@ -636,10 +834,35 @@
    <th data-tooltip="oshpf">hpf</th>
    <td class="range"><input type="range" min="0" max="999" step="1" id="osc.3.filter.hpf"></input></td>
  </tr>
- <tr  class="for-osc3-type for-osc3-type-osc for-osc3-type-sqr for-osc3-type-saw for-osc3-type-tri for-osc3-type-sin for-osc3-type-prl for-osc3-type-plx">
+ <tr>
    <th>   </th>
  </tr>
- <tr class="for-osc3-type for-osc3-type-osc">
+ <tr>
+   <th>rgb</th>
+ </tr>
+ <tr>
+   <th data-tooltip="channel">r</th>
+   <td class="range"><input type="range" min="0" max="999" step="1" id="osc.3.channels.r"></input></td>
+ </tr>
+ <tr>
+   <th data-tooltip="channel">g</th>
+   <td class="range"><input type="range" min="0" max="999" step="1" id="osc.3.channels.g"></input></td>
+ </tr>
+ <tr>
+   <th data-tooltip="channel">b</th>
+   <td class="range"><input type="range" min="0" max="999" step="1" id="osc.3.channels.b"></input></td>
+ </tr>
+ <!-- <tr>
+   <th data-tooltip="channel">a</th>
+   <td class="range"><input type="range" min="0" max="999" step="1" id="osc.3.channels.a"></input></td>
+ </tr> -->
+ <tr>
+   <th>   </th>
+ </tr>
+ <tr>
+   <th>osc</th>
+ </tr>
+ <tr class="for-osc3-type for-osc3-type-osc for-osc3-type-pwm">
    <th data-tooltip="oscen">cen</th>
    <td class="range"><input type="range" min="0" max="999" step="1" id="osc.3.config.z.cen"></input></td>
  </tr>
@@ -647,19 +870,19 @@
    <th data-tooltip="osshp">shp</th>
    <td class="range"><input type="range" min="0" max="999" step="1" id="osc.3.config.z.shp"></input></td>
  </tr>
- <tr class="for-osc3-type for-osc3-type-osc for-osc3-type-osc for-osc3-type-sqr for-osc3-type-saw for-osc3-type-tri for-osc3-type-sin">
+ <tr class="for-osc3-type for-osc3-type-osc for-osc3-type-osc for-osc3-type-sqr for-osc3-type-pwm for-osc3-type-saw for-osc3-type-tri for-osc3-type-sin">
    <th data-tooltip="osmod">rot</th>
    <td class="range"><input type="range" min="0" max="999" step="1" id="osc.3.config.z.mod"></input></td>
  </tr>
- <tr class="for-osc3-type for-osc3-type-osc for-osc3-type-sqr for-osc3-type-saw for-osc3-type-tri for-osc3-type-sin for-osc3-type-prl for-osc3-type-plx">
+ <tr class="for-osc3-type for-osc3-type-osc for-osc3-type-sqr for-osc3-type-pwm for-osc3-type-saw for-osc3-type-tri for-osc3-type-sin for-osc3-type-prl for-osc3-type-plx">
    <th data-tooltip="osfrq">frq</th>
    <td class="range"><input type="range" min="0" max="999" step="1" id="osc.3.config.z.frq"></input></td>
  </tr>
- <tr class="for-osc3-type for-osc3-type-osc for-osc3-type-sqr for-osc3-type-saw for-osc3-type-tri for-osc3-type-sin">
+ <tr class="for-osc3-type for-osc3-type-osc for-osc3-type-sqr for-osc3-type-pwm for-osc3-type-saw for-osc3-type-tri for-osc3-type-sin">
    <th data-tooltip="osspd">spd</th>
    <td class="range"><input type="range" min="0" max="999" step="1" id="osc.3.config.z.len"></input></td>
  </tr>
- <tr class="for-osc3-type for-osc3-type-osc for-osc3-type-sqr for-osc3-type-saw for-osc3-type-tri for-osc3-type-sin for-osc3-type-prl for-osc3-type-plx">
+ <tr class="for-osc3-type for-osc3-type-osc for-osc3-type-sqr for-osc3-type-pwm for-osc3-type-saw for-osc3-type-tri for-osc3-type-sin for-osc3-type-prl for-osc3-type-plx">
    <th data-tooltip="osoff">off</th>
    <td class="range"><input type="range" min="0" max="999" step="1" id="osc.3.config.z.off"></input></td>
  </tr>
@@ -691,33 +914,33 @@
    <th data-tooltip="osoff">off</th>
    <td class="range"><input type="range" min="0" max="999" step="1" id="osc.3.config.y.off"></input></td>
  </tr>
- <tr>
+ <tr class="for-fx-active">
    <th>   </th>
  </tr>
- <tr>
-   <th data-tooltip="fx"> fx</th>
+ <tr class="for-fx-active">
+   <th data-tooltip="fx">fx</th>
  </tr>
- <tr>
+ <tr class="for-fx-active">
    <th data-tooltip="fxbit">bit</th>
    <td class="range"><input type="range" min="0" max="999" step="1" id="osc.3.fx.bit"></input></td>
  </tr>
- <tr>
+ <tr class="for-fx-active">
    <th data-tooltip="fxcmp">cmp</th>
    <td class="range"><input type="range" min="0" max="999" step="1" id="osc.3.fx.cmp"></input></td>
  </tr>
- <tr>
+ <tr class="for-fx-active">
    <th data-tooltip="fxexp">exp</th>
    <td class="range"><input type="range" min="0" max="999" step="1" id="osc.3.fx.exp"></input></td>
  </tr>
- <tr>
+ <tr class="for-fx-active">
    <th data-tooltip="fxrnd">rnd</th>
    <td class="range"><input type="range" min="0" max="999" step="1" id="osc.3.fx.rnd"></input></td>
  </tr>
- <tr>
+ <tr class="for-fx-active">
    <th data-tooltip="fxdrv">drv</th>
    <td class="range"><input type="range" min="0" max="999" step="1" id="osc.3.fx.drv"></input></td>
  </tr>
-<tr id="osc.3.fx.c" data-template="fx">
+<tr class="for-fx-active" id="osc.3.fx.c" data-template="fx">
 </tr>
 </table>
 
@@ -727,7 +950,7 @@
  </tr>
  <tr>
    <th data-tooltip="ostyp">typ</th>
-   <td><span id="osc.4.typ" data-customclass="osc4-type" data-options="off,prl,plx,osc,sqr,saw,tri,sin"></span></td>
+   <td><span id="osc.4.typ" data-customclass="osc4-type" data-options="off,prl,plx,osc,sqr,pwm,saw,tri,sin"></span></td>
  </tr>
  <tr>
    <th data-tooltip="osmix">mix</th>
@@ -752,10 +975,35 @@
    <th data-tooltip="oshpf">hpf</th>
    <td class="range"><input type="range" min="0" max="999" step="1" id="osc.4.filter.hpf"></input></td>
  </tr>
- <tr  class="for-osc4-type for-osc4-type-osc for-osc4-type-sqr for-osc4-type-saw for-osc4-type-tri for-osc4-type-sin for-osc4-type-prl for-osc4-type-plx">
+ <tr>
    <th>   </th>
  </tr>
- <tr class="for-osc4-type for-osc4-type-osc">
+ <tr>
+   <th>rgb</th>
+ </tr>
+ <tr>
+   <th data-tooltip="channel">r</th>
+   <td class="range"><input type="range" min="0" max="999" step="1" id="osc.4.channels.r"></input></td>
+ </tr>
+ <tr>
+   <th data-tooltip="channel">g</th>
+   <td class="range"><input type="range" min="0" max="999" step="1" id="osc.4.channels.g"></input></td>
+ </tr>
+ <tr>
+   <th data-tooltip="channel">b</th>
+   <td class="range"><input type="range" min="0" max="999" step="1" id="osc.4.channels.b"></input></td>
+ </tr>
+ <!-- <tr>
+   <th data-tooltip="channel">a</th>
+   <td class="range"><input type="range" min="0" max="999" step="1" id="osc.4.channels.a"></input></td>
+ </tr> -->
+ <tr>
+   <th>   </th>
+ </tr>
+ <tr>
+   <th>osc</th>
+ </tr>
+ <tr class="for-osc4-type for-osc4-type-osc for-osc4-type-pwm">
    <th data-tooltip="oscen">cen</th>
    <td class="range"><input type="range" min="0" max="999" step="1" id="osc.4.config.z.cen"></input></td>
  </tr>
@@ -763,19 +1011,19 @@
    <th data-tooltip="osshp">shp</th>
    <td class="range"><input type="range" min="0" max="999" step="1" id="osc.4.config.z.shp"></input></td>
  </tr>
- <tr class="for-osc4-type for-osc4-type-osc for-osc4-type-osc for-osc4-type-sqr for-osc4-type-saw for-osc4-type-tri for-osc4-type-sin">
+ <tr class="for-osc4-type for-osc4-type-osc for-osc4-type-osc for-osc4-type-sqr for-osc4-type-pwm for-osc4-type-saw for-osc4-type-tri for-osc4-type-sin">
    <th data-tooltip="osmod">rot</th>
    <td class="range"><input type="range" min="0" max="999" step="1" id="osc.4.config.z.mod"></input></td>
  </tr>
- <tr class="for-osc4-type for-osc4-type-osc for-osc4-type-sqr for-osc4-type-saw for-osc4-type-tri for-osc4-type-sin for-osc4-type-prl for-osc4-type-plx">
+ <tr class="for-osc4-type for-osc4-type-osc for-osc4-type-sqr for-osc4-type-pwm for-osc4-type-saw for-osc4-type-tri for-osc4-type-sin for-osc4-type-prl for-osc4-type-plx">
    <th data-tooltip="osfrq">frq</th>
    <td class="range"><input type="range" min="0" max="999" step="1" id="osc.4.config.z.frq"></input></td>
  </tr>
- <tr class="for-osc4-type for-osc4-type-osc for-osc4-type-sqr for-osc4-type-saw for-osc4-type-tri for-osc4-type-sin">
+ <tr class="for-osc4-type for-osc4-type-osc for-osc4-type-sqr for-osc4-type-pwm for-osc4-type-saw for-osc4-type-tri for-osc4-type-sin">
    <th data-tooltip="osspd">spd</th>
    <td class="range"><input type="range" min="0" max="999" step="1" id="osc.4.config.z.len"></input></td>
  </tr>
- <tr class="for-osc4-type for-osc4-type-osc for-osc4-type-sqr for-osc4-type-saw for-osc4-type-tri for-osc4-type-sin for-osc4-type-prl for-osc4-type-plx">
+ <tr class="for-osc4-type for-osc4-type-osc for-osc4-type-sqr for-osc4-type-pwm for-osc4-type-saw for-osc4-type-tri for-osc4-type-sin for-osc4-type-prl for-osc4-type-plx">
    <th data-tooltip="osoff">off</th>
    <td class="range"><input type="range" min="0" max="999" step="1" id="osc.4.config.z.off"></input></td>
  </tr>
@@ -807,33 +1055,33 @@
    <th data-tooltip="osoff">off</th>
    <td class="range"><input type="range" min="0" max="999" step="1" id="osc.4.config.y.off"></input></td>
  </tr>
- <tr>
+ <tr class="for-fx-active">
    <th>   </th>
  </tr>
- <tr>
-   <th data-tooltip="fx"> fx</th>
+ <tr class="for-fx-active">
+   <th data-tooltip="fx">fx</th>
  </tr>
- <tr>
+ <tr class="for-fx-active">
    <th data-tooltip="fxbit">bit</th>
    <td class="range"><input type="range" min="0" max="999" step="1" id="osc.4.fx.bit"></input></td>
  </tr>
- <tr>
+ <tr class="for-fx-active">
    <th data-tooltip="fxcmp">cmp</th>
    <td class="range"><input type="range" min="0" max="999" step="1" id="osc.4.fx.cmp"></input></td>
  </tr>
- <tr>
+ <tr class="for-fx-active">
    <th data-tooltip="fxexp">exp</th>
    <td class="range"><input type="range" min="0" max="999" step="1" id="osc.4.fx.exp"></input></td>
  </tr>
- <tr>
+ <tr class="for-fx-active">
    <th data-tooltip="fxrnd">rnd</th>
    <td class="range"><input type="range" min="0" max="999" step="1" id="osc.4.fx.rnd"></input></td>
  </tr>
- <tr>
+ <tr class="for-fx-active">
    <th data-tooltip="fxdrv">drv</th>
    <td class="range"><input type="range" min="0" max="999" step="1" id="osc.4.fx.drv"></input></td>
  </tr>
-<tr id="osc.4.fx.c" data-template="fx">
+<tr class="for-fx-active" id="osc.4.fx.c" data-template="fx">
 </tr>
 </table>
 </div>

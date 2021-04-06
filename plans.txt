@@ -1,0 +1,43 @@
+V0.2
+Rework resolution to work as expected in combination with oscilator frequencys
+
+Optimise code speed
+
+Add midi sync
+
+Add presets
+
+Add midi pcm
+
+Add midi cc control with learnable parameters
+
+Add sequencers and lfos
+
+Add small controll screen in second GUI
+
+Add feedback two simple 2d render engine
+
+Add output filter (mandala style)
+
+Add text render overlay as optional render engine
+
+Rework Oscilators to become layers with selectable type, subtype and common parameters like fx and rot
+
+Available layertypes:
+osc - the standard Oscilators
+alg - the standard noise algorithms and "logic" based
+img - bitmap image with integer values, possible to animate
+spr - tileable sprite texture, possbile to animate
+
+Image
+Load in a bitmap image that can be stretched, proportionally fitted or scaled and tiled.
+The image may be animated by either:
+passing an array of images that is cycled through at a specific rate
+or panning across the image in a specific rate (steps/frames)
+
+Sprites
+Generate a sprite that can have up to 4bit resolution.
+It can be stretched, proportionally fitted or scaled and tiled
+The sprite may be animated by either:
+passing an array of sprites that is cycled through at a specific rate
+or panning across the sprite in a specific rate (steps/frames)

@@ -1,0 +1,37 @@
+SCREEN
+The visual output is presented on a scalable screen.
+The screen is made up of pixels which can take an rgb color value.
+What is visible on the screen is determined by a set of layers.
+
+LAYERS
+Layers can be mixed in different ways and will be layered on top of each other in a specific order.
+A layer can have exactly one engine, that determines how virtual data is displayed visually.
+There are currently these engines available:
+s2D - pixelbased 2D engine
+c2D - cellbased 2D engine
+ASC - ASCII engine
+
+A layers contains a set of oscilators, algorithms and sources, which make up the total image data available
+
+0-z - values between 0 and 35, serve to input parameters values
+A-Z - Variables
++ - additive summing
+- - substractive summing
+* - multiplying summing
+/ - dividing summing
+% - modulating summing
+
+() - parameters for a function, not passing parameters sets them to 0 automatically
+[] - layer array of functions
+
+LAYERS
+
+
+SOURCES
+~(center,shape,frequency,speed,rotation,offset) - oscilator
+$(xspeed,xgrain,yspeed,ygrain,zspeed,zgrain) - noise algorithm
+!(index,relative width, relative height) - image
+#(width,height,binary) - sprite
+
+FUNCTIONS
+=(min,max,lpf,hpf)

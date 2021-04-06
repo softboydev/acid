@@ -59,6 +59,9 @@ function requireOneFramejump(){
 function requireTenFramesjump(){
   mainWindow.webContents.send("requireTenFramesjump");
 }
+function requireRefresh(){
+  mainWindow.webContents.send("requireRefresh");
+}
 
 function openFile(){
   dialog.showOpenDialog(mainWindow, {
@@ -95,11 +98,11 @@ function createWindow () {
     minHeight: 200,
     backgroundColor: '#000000',
     icon: path.join(__dirname, { darwin: 'icon.icns', linux: 'icon.png', win32: 'icon.ico' }[process.platform] || 'icon.ico'),
-    frame: process.platform !== 'darwin',
-    skipTaskbar: process.platform === 'darwin',
-    autoHideMenuBar: process.platform === 'darwin',
+    // frame: process.platform !== 'darwin',
+    // skipTaskbar: process.platform === 'darwin',
+    // autoHideMenuBar: process.platform === 'darwin',
     webPreferences: {
-      devTools: false,
+      devTools: true,
       enableRemoteModule: true,
       nodeIntegration: true,
       contextIsolation: false,
@@ -137,11 +140,11 @@ function createGUI () {
       height: 400,
       backgroundColor: '#000000',
       icon: path.join(__dirname, { darwin: 'icon.icns', linux: 'icon.png', win32: 'icon.ico' }[process.platform] || 'icon.ico'),
-      frame: process.platform !== 'darwin',
-      skipTaskbar: process.platform === 'darwin',
-      autoHideMenuBar: process.platform === 'darwin',
+      // frame: process.platform !== 'darwin',
+      // skipTaskbar: process.platform === 'darwin',
+      // autoHideMenuBar: process.platform === 'darwin',
       webPreferences: {
-        devTools: false,
+        devTools: true,
         enableRemoteModule: true,
         nodeIntegration: true,
         contextIsolation: false,
@@ -244,6 +247,7 @@ function createMenu(){
         {  click (s){requireAction(s);}, type: 'normal', label: 'Stop' },
         {  click (s){requireOneFramejump();}, type: 'normal', label: 'Jump 1 Frame' },
         {  click (s){requireTenFramesjump(10);}, type: 'normal', label: 'Jump 10 Frames' },
+        {  click (s){requireRefresh();}, type: 'normal', label: 'Refresh' },
         { type: 'separator' },
         {  click (s){requireAction(s);}, type: 'normal', label: 'Reseed' },
       ]
@@ -276,6 +280,7 @@ function createMenu(){
       submenu: [
         { role: 'reload' },
         { role: 'forceReload' },
+        { role: 'toggleDevTools' },
         { type: 'separator' },
         { role: 'togglefullscreen' }
       ]

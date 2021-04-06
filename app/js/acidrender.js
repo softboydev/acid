@@ -1,12 +1,21 @@
 function ACIDRENDER(storage,ipc,canvas,mothership){
+  this.analytics = {
+    msPerFrame: 0,
+    frameTime: 0,
+    fps: 0,
+    fpsDisplay: document.getElementById("analyticsFPS"),
+    widthDisplay: document.getElementById("analyticsWidth"),
+    heightDisplay: document.getElementById("analyticsHeight")
+  }
   this.storage = storage
   this.ipc = ipc
   this.canvas = canvas
-  this.context = this.canvas.getContext("2d")
+  this.gl = this.canvas.getContext('webgl');
   this.mothership = mothership
   this.config = {}
   this.storage = storage
   this.count = 1000
+  this.particles = [],
   this.upCount = function(){
     this.count += 1 / this.config.settings.framerate
     if(this.count > 2147483646){
@@ -38,6 +47,11 @@ function ACIDRENDER(storage,ipc,canvas,mothership){
       }
     }
   }
+  this.refresh = function(){
+    if(this.stopped){
+      this.render()
+    }
+  }
   this.update = function(callback){
     this.storage.get("config", function(error, data) {
       if(error){
@@ -56,171 +70,16 @@ function ACIDRENDER(storage,ipc,canvas,mothership){
     width: 0,
     height: 0
   }
-  this.engines = {
-    s2d: function(get,ctx,config,dimensions,t){
-      let background = config.clrs[0] || "#000000"
-      ctx.fillStyle = background
-      ctx.fillRect(0,0,dimensions.width,dimensions.height)
-      let d = (dimensions.width + dimensions.height) * 0.5
-      let w = 1 + (config.resolution * 24) + (config.x * d)
-      let h = 1 + (config.resolution * 24) + (config.y * d)
-      for(let y = 0; y < dimensions.height / h; y++){
-        for(let x = 0; x < dimensions.width / w; x++){
-          let c = get(x,y,0,t)
-          let _x = x * w
-          let _y = y * h
-          let color = "#ffffff"
-          if(!config.hsl){
-            color = "hsl(" + ((1 - c) * 240) + ", 100%, 50%)";
-          }
-          else{
-            if(config.mod == "hsl"){
-              let rgb = hexToRgb(config.prm)
-              let h =  ((1 - c) * rgb.r / 256) * 360 * config.clr
-              let s = ((1 - c) * rgb.g / 256) * 100 * config.clr
-              let l = ((1 - c) * rgb.b / 256) * 100 * config.clr
-              color = "hsl(" + h + ", " + s + "%, " + l + "%)";
-            }
-            else if(config.mod == "grd" && config.clr != 0){
-              color = mix(config.bck.substring(1),config.prm.substring(1), (1 - c * config.clr) * 100)
-            }
-            else if(config.mod == "ndx" && config.clr != 0 && config.clrs.length > 1){
-              color = config.clrs[Math.floor((c * config.clr) * config.clrs.length)]
-            }
-            else if(config.mod == "rgb"){
-              let rgb = hexToRgb(config.prm)
-              let r = rgb.r / 255 * (c * 255) * config.clr
-              let g = rgb.g / 255 * ((c * 255 * 255) % 255) * config.clr
-              let b = rgb.b / 255 * ((c * 255 * 255 * 255) % 255) * config.clr
-              color = "rgb(" +  r + "," + g + "," + b + ")"
-            }
-          }
-          ctx.fillStyle = color
-          ctx.fillRect(_x,_y,w,h)
-        }
-      }
-    },
-    c2d: function(get,ctx,config,dimensions,t){
-      let background = config.bck || "#000000"
-      ctx.fillStyle = background
-      ctx.fillRect(0,0,dimensions.width,dimensions.height)
-      let d = (dimensions.width + dimensions.height) * 0.5
-      let w = 1 + (config.resolution * 24) + (config.x * d)
-      let h = 1 + (config.resolution * 24) + (config.y * d)
-      for(let y = 0; y < dimensions.height / h; y++){
-        for(let x = 0; x < dimensions.width / w; x++){
-          let c = get(x,y,0,t)
-          let pt = Math.min(((config.pad.n + (0.5 * (1 - c) * config.pad.dn)) * w * 0.5), w * 0.5)
-          let pr = Math.min(((config.pad.e + (0.5 * (1 - c) * config.pad.de)) * h * 0.5), h * 0.5)
-          let pb = Math.min(((config.pad.s + (0.5 * (1 - c) * config.pad.ds)) * h * 0.5), h * 0.5)
-          let pl = Math.min(((config.pad.w + (0.5 * (1 - c) * config.pad.dw)) * h * 0.5), h * 0.5)
-          let bx = x * w
-          let by = y * h
-          let _x = x * w + pl
-          let _y = y * h + pt
-          let cx = x * w + 0.5 * w
-          let cy = y * h + 0.5 * h
-          let dx = w - pl - pr
-          let dy = h - pt - pb
-          let rtl = Math.min(dx,dy) * (config.rad.tl * 0.5 - c * 0.5 * config.rad.dtl)
-          let rtr = Math.min(dx,dy) * (config.rad.tr * 0.5 - c * 0.5 * config.rad.dtr)
-          let rbr = Math.min(dx,dy) * (config.rad.br * 0.5 - c * 0.5 * config.rad.dbr)
-          let rbl = Math.min(dx,dy) * (config.rad.bl * 0.5 - c * 0.5 * config.rad.dbl)
-          let rotation = (config.r + (c * config.rot)) * 2 * Math.PI
-          let color = "#ffffff"
-          let secColor = "#000000"
-          /*Primary Color*/
-          if(!config.hsl){
-            color = "hsl(" + ((1 - c) * 240) + ", 100%, 50%)";
-          }
-          else{
-            if(config.mod == "hsl"){
-              let rgb = hexToRgb(config.prm)
-              let h =  ((1 - c) * rgb.r / 256) * 360 * config.clr
-              let s = ((1 - c) * rgb.g / 256) * 100 * config.clr
-              let l = ((1 - c) * rgb.b / 256) * 100 * config.clr
-              color = "hsl(" + h + ", " + s + "%, " + l + "%)";
-            }
-            else if(config.mod == "grd" && config.clr != 0){
-              color = mix(config.bck.substring(1),config.prm.substring(1), (1 - c * config.clr) * 100)
-            }
-            else if(config.mod == "ndx" && config.clr != 0 && config.clrs.length > 1){
-              color = config.clrs[Math.floor((c * config.clr) * config.clrs.length)]
-            }
-            else if(config.mod == "rgb"){
-              let rgb = hexToRgb(config.prm)
-              let r = rgb.r / 255 * (c * 255) * config.clr
-              let g = rgb.g / 255 * ((c * 255 * 255) % 255) * config.clr
-              let b = rgb.b / 255 * ((c * 255 * 255 * 255) % 255) * config.clr
-              color = "rgb(" +  r + "," + g + "," + b + ")"
-            }
-          }
-          /*Secodary Color*/
-          if(!config.hsl){
-            secColor = "hsl(" + ((1 - c) * 240) + ", 100%, 50%)";
-          }
-          else{
-            if(config.sec.mod == "hsl"){
-              let rgb = hexToRgb(config.sec.prm)
-              let h =  ((1 - c * config.sec.clr) * rgb.r / 256) * 360
-              let s = ((1 - c * config.sec.clr) * rgb.g / 256) * 100
-              let l = ((1 - c * config.sec.clr) * rgb.b / 256) * 100
-              secColor = "hsl(" + h + ", " + s + "%, " + l + "%)";
-            }
-            else if(config.sec.mod == "grd" && config.sec.clr != 0){
-              secColor = mix(config.sec.bck.substring(1),config.sec.prm.substring(1), (1 - c * config.sec.clr) * 100)
-            }
-            else if(config.sec.mod == "ndx" && config.sec.clr != 0 && config.sec.clrs.length > 1){
-              secColor = config.sec.clrs[Math.floor((c * config.sec.clr) * config.sec.clrs.length)]
-            }
-            else if(config.sec.mod == "rgb"){
-              let rgb = hexToRgb(config.sec.prm)
-              let r = rgb.r / 255 * (config.sec.clr * c * 255)
-              let g = rgb.g / 255 * ((config.sec.clr * c * 255 * 255) % 255)
-              let b = rgb.b / 255 * ((config.sec.clr * c * 255 * 255 * 255) % 255)
-              secColor = "rgb(" +  r + "," + g + "," + b + ")"
-            }
-          }
-          ctx.fillStyle = secColor
-          ctx.fillRect(bx,by,w,h)
-          ctx.fillStyle = color
-          ctx.translate(cx, cy);
-          ctx.rotate(rotation);
-          ctx.translate(-cx, -cy);
-          ctx.beginPath();
-          ctx.moveTo(_x + rtl, _y);
-          ctx.lineTo(_x + dx - rtr, _y);
-          ctx.quadraticCurveTo(_x + dx, _y, _x + dx, _y + rtr);
-          ctx.lineTo(_x + dx, _y + dy - rbr);
-          ctx.quadraticCurveTo(_x + dx, _y + dy, _x + dx - rbr, _y + dy);
-          ctx.lineTo(_x + rbl, _y + dy);
-          ctx.quadraticCurveTo(_x, _y + dy, _x, _y + dy - rbl);
-          ctx.lineTo(_x, _y + rtl);
-          ctx.quadraticCurveTo(_x, _y, _x + rtl, _y);
-          ctx.closePath();
-          ctx.setTransform(1, 0, 0, 1, 0, 0);
-          ctx.fill()
-        }
-      }
-    }
-  }
-  this.canvas = canvas
-  this.context = this.canvas.getContext("2d")
   this.resize = function(){
     this.dimensions.width = window.innerWidth
     this.dimensions.height = window.innerHeight
     this.canvas.width = this.dimensions.width
     this.canvas.height = this.dimensions.height
+    this.gl.viewport(0,0,this.canvas.width,canvas.height);
+    this.analytics.widthDisplay.innerText = this.canvas.width
+    this.analytics.heightDisplay.innerText = this.canvas.height
   }
   this.render = function(){
-    if(this.engines[this.config.render.eng]){
-      let get = this.mothership.get.bind(this.mothership)
-      this.engines[this.config.render.eng](get,this.context,this.config.render,this.dimensions,this.count)
-    }
-    if(this.running){
-      this.upCount()
-      this.mothership.canvasCapturerer.requestGifFrame(60000 / (this.config.settings.framerate * 60))
-    }
     if(!this.stopped){
       setTimeout(function () {
           requestAnimationFrame(function(){
@@ -228,8 +87,174 @@ function ACIDRENDER(storage,ipc,canvas,mothership){
           }.bind(this))
       }.bind(this), 60000 / (this.config.settings.framerate * 60));
     }
+    this.analytics.msPerFrame = performance.now() - this.analytics.frameTime
+    this.analytics.frameTime = performance.now()
+    this.analytics.fps = Math.round(1000 / this.analytics.msPerFrame * 100) / 100
+    this.analytics.fpsDisplay.innerText = this.analytics.fps
+
+
+     //  gl = this.gl
+     //  let colors = [];
+     // let vertices = [];
+     // var verticeN = 0
+     // let d = (this.dimensions.width + this.dimensions.height) * 0.5
+     // let resolution = 2 + this.config.render.resolution * 1000
+     // let w = this.config.render.a < 0.5 ? resolution : resolution + (this.dimensions.width - resolution) * ((this.config.render.a - 0.5) * 2)
+     // let h = this.config.render.a > 0.5 ? resolution : resolution + (this.dimensions.height - resolution) * (1 - (this.config.render.a * 2))
+     // let subpixels = this.config.render.optimization.subpixels == "on"
+     // for(let y = 0; y < this.dimensions.height; y+=h){
+     //   for(let x = 0; x < this.dimensions.width; x+=w){
+     //     let A = this.mothership.get(x,y,0,this.count)
+     //     let B = this.mothership.get(x+w,y,0,this.count)
+     //     let C = this.mothership.get(x,y+h,0,this.count)
+     //     let D = this.mothership.get(x+w,y+h,0,this.count)
+     //     let Ar = this.config.render.channels.r.active ? ((this.config.render.channels.r.base + A[0] * this.config.render.channels.r.mod) * this.config.render.channels.r.amp) % 1 : 0
+     //     let Ag = this.config.render.channels.g.active ? ((this.config.render.channels.g.base + A[1] * this.config.render.channels.g.mod) * this.config.render.channels.g.amp) % 1 : 0
+     //     let Ab = this.config.render.channels.b.active ? ((this.config.render.channels.b.base + A[2] * this.config.render.channels.b.mod) * this.config.render.channels.b.amp) % 1 : 0
+     //     let Br = this.config.render.channels.r.active ? ((this.config.render.channels.r.base + B[0] * this.config.render.channels.r.mod) * this.config.render.channels.r.amp) % 1 : 0
+     //     let Bg = this.config.render.channels.g.active ? ((this.config.render.channels.g.base + B[1] * this.config.render.channels.g.mod) * this.config.render.channels.g.amp) % 1 : 0
+     //     let Bb = this.config.render.channels.b.active ? ((this.config.render.channels.b.base + B[2] * this.config.render.channels.b.mod) * this.config.render.channels.b.amp) % 1 : 0
+     //     let Cr = this.config.render.channels.r.active ? ((this.config.render.channels.r.base + C[0] * this.config.render.channels.r.mod) * this.config.render.channels.r.amp) % 1 : 0
+     //     let Cg = this.config.render.channels.g.active ? ((this.config.render.channels.g.base + C[1] * this.config.render.channels.g.mod) * this.config.render.channels.g.amp) % 1 : 0
+     //     let Cb = this.config.render.channels.b.active ? ((this.config.render.channels.b.base + C[2] * this.config.render.channels.b.mod) * this.config.render.channels.b.amp) % 1 : 0
+     //     let Dr = this.config.render.channels.r.active ? ((this.config.render.channels.r.base + D[0] * this.config.render.channels.r.mod) * this.config.render.channels.r.amp) % 1 : 0
+     //     let Dg = this.config.render.channels.g.active ? ((this.config.render.channels.g.base + D[1] * this.config.render.channels.g.mod) * this.config.render.channels.g.amp) % 1 : 0
+     //     let Db = this.config.render.channels.b.active ? ((this.config.render.channels.b.base + D[2] * this.config.render.channels.b.mod) * this.config.render.channels.b.amp) % 1 : 0
+     //     // let gray = Math.floor(0.2126 * r + 0.7152 * g + 0.0722 * b)
+     //     colors.push(Ar,Ag,Ab,Br,Bg,Bb,Cr,Cg,Cb,Br,Bg,Bb,Cr,Cg,Cb,Dr,Dg,Db)
+     //     vertices.push((x / this.dimensions.width * 2) - 1,(y / this.dimensions.height * 2) - 1)
+     //     vertices.push(((x + w) / this.dimensions.width * 2) - 1,(y / this.dimensions.height * 2) - 1)
+     //     vertices.push((x / this.dimensions.width * 2) - 1,((y + h) / this.dimensions.height * 2) - 1)
+     //     vertices.push(((x + w) / this.dimensions.width * 2) - 1,(y / this.dimensions.height * 2) - 1)
+     //     vertices.push((x / this.dimensions.width * 2) - 1,((y + h) / this.dimensions.height * 2) - 1)
+     //     vertices.push(((x + w) / this.dimensions.width * 2) - 1,((y + h) / this.dimensions.height * 2) - 1)
+     //     verticeN+=6
+     //   }
+     // }
+     // let colorBuffer = gl.createBuffer();
+     // gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);
+     // gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors), gl.STATIC_DRAW);
+     // let aColor = gl.getAttribLocation(this.shaderProgram, 'aColor');
+     // gl.vertexAttribPointer(aColor, 3  , gl.FLOAT, false, 0, 0);
+     // gl.enableVertexAttribArray(aColor);
+     // let vertex_buffer = gl.createBuffer();
+     // gl.bindBuffer(gl.ARRAY_BUFFER, vertex_buffer);
+     // gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
+     // let coord = gl.getAttribLocation(this.shaderProgram, "coord");
+     // gl.vertexAttribPointer(coord, 2  , gl.FLOAT, false, 0, 0);
+     // gl.enableVertexAttribArray(coord);
+     // gl.clear(gl.COLOR_BUFFER_BIT);
+     // gl.drawArrays(gl.TRIANGLES, 0, verticeN)
+         gl = this.gl
+         let colors = [];
+        let vertices = [];
+        var verticeN = 0
+        let d = (this.dimensions.width + this.dimensions.height) * 0.5
+        let res = 2 + this.config.render.resolution * 24
+        gl.uniform1f(this.resolutionLocation, res + 0.1);
+        let subpixels = this.config.render.optimization.subpixels == "on"
+        let grayscale = this.config.render.a
+        let ascii = ""
+        for(let y = 0; y < this.dimensions.height; y+=res){
+          for(let x = 0; x < this.dimensions.width; x+=res){
+            let relX = x / this.dimensions.width // 0 - 1
+            let centerX = 0.5
+            let centeredRelX = relX <= centerX ? relX / centerX : 1- ((relX - centerX) / (1 - centerX))// 0 - 1 - 0
+            let relY = y / this.dimensions.height // 0 - 1
+            let centerY = 0.5
+            let centeredRelY = relY <= centerY ? relY / centerY : 1 - ((relY - centerY) / (1 - centerY))// 0 - 1 - 0
+            // let timeshift = (centeredRelX + centeredRelY) * 0.5
+            let timeshift = Math.round((centeredRelX + centeredRelY) * 10) * 0.1
+            // let timeshift = (Math.round(centeredRelX * 10) * 0.1 + Math.round(centeredRelY * 10) * 0.1) * 0.5
+            // let timeshift = (Math.abs((x / this.dimensions.width * 2) - 1) + Math.abs((y / this.dimensions.height * 2) - 1)) * 0.5
+            // timeshift = Math.sin(0.5 * timeshift)
+            // timeshift = Math.round(timeshift * 10) * 0.1
+            // timeshift = tmix * (1 - Math.sin(timeshift * 0.5 * Math.PI)) + (1-tmix) * timeshift
+            // let shiftX = Math.round(y * 0.01) % 5 ? 100 : 0
+            // let shiftY = Math.round(x * 0.01) % 3 ? 200 : 0
+            let rgb = this.mothership.get(x,y,0,this.count + timeshift * 2) //multipy x and y for zoom and stretch, maybe rotate?
+            let r = this.config.render.channels.r.active ? ((this.config.render.channels.r.base + rgb[0] * this.config.render.channels.r.mod) * this.config.render.channels.r.amp): 0
+            let g = this.config.render.channels.g.active ? ((this.config.render.channels.g.base + rgb[1] * this.config.render.channels.g.mod) * this.config.render.channels.g.amp): 0
+            let b = this.config.render.channels.b.active ? ((this.config.render.channels.b.base + rgb[2] * this.config.render.channels.b.mod) * this.config.render.channels.b.amp): 0
+            let bw = (0.2126 * r + 0.7152 * g + 0.0722 * b)
+            if(subpixels){
+              colors.push(r * (1-grayscale) + bw * grayscale,0,0,0,g * (1-grayscale) + bw * grayscale,0,0,0,b * (1-grayscale) + bw * grayscale)
+              vertices.push(
+                (x / this.dimensions.width * 2) - 1,
+                (y / this.dimensions.height * 2) - 1,
+                (x / this.dimensions.width * 2) - 1,
+                ((y + 0.33333333 * res) / this.dimensions.height * 2) - 1,
+                (x / this.dimensions.width * 2) - 1,
+                ((y + 0.66666666 * res) / this.dimensions.height * 2) - 1
+              )
+              verticeN+=3
+            }
+            else{
+              colors.push(r * (1-grayscale) + bw * grayscale,g * (1-grayscale) + bw * grayscale,b * (1-grayscale) + bw * grayscale)
+              vertices.push(
+                (x / this.dimensions.width * 2) - 1,
+                (y / this.dimensions.height * 2) - 1,
+              )
+              verticeN+=1
+            }
+          }
+        }
+        let colorBuffer = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);
+        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors), gl.STATIC_DRAW);
+        let aColor = gl.getAttribLocation(this.shaderProgram, 'aColor');
+        gl.vertexAttribPointer(aColor, 3  , gl.FLOAT, false, 0, 0);
+        gl.enableVertexAttribArray(aColor);
+        let vertex_buffer = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, vertex_buffer);
+        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
+        let coord = gl.getAttribLocation(this.shaderProgram, "coord");
+        gl.vertexAttribPointer(coord, 2  , gl.FLOAT, false, 0, 0);
+        gl.enableVertexAttribArray(coord);
+        gl.clear(gl.COLOR_BUFFER_BIT);
+        gl.drawArrays(gl.POINTS, 0, verticeN)
+    if(this.running){
+      this.upCount()
+      this.mothership.canvasCapturerer.requestGifFrame(60000 / (this.config.settings.framerate * 60))
+    }
   }
   this.init = function(){
+    let gl = this.gl
+    gl.clearColor(0,0,0,1);
+
+   let vertCode =
+      'attribute vec4 coord;'+
+      'attribute vec4 aColor;'+
+      'varying vec4 vColor;'+
+      'uniform float resolution;'+
+
+
+      'void main(void) {'+
+        'gl_Position = coord;'+
+        'gl_PointSize = resolution;'+
+        'vColor = aColor;'+
+      '}'
+  let vertShader = gl.createShader(gl.VERTEX_SHADER);
+   gl.shaderSource(vertShader, vertCode);
+   gl.compileShader(vertShader);
+   let fragCode =
+   'precision mediump float;'+
+
+  'varying vec4 vColor;'+
+
+    'void main() {'+
+    'gl_FragColor = vColor;'+
+    '}'
+   let fragShader = gl.createShader(gl.FRAGMENT_SHADER);
+   gl.shaderSource(fragShader, fragCode);
+   gl.compileShader(fragShader);
+   let shaderProgram = gl.createProgram();
+   gl.attachShader(shaderProgram, vertShader);
+   gl.attachShader(shaderProgram, fragShader);
+   gl.linkProgram(shaderProgram);
+   gl.useProgram(shaderProgram);
+   this.shaderProgram = shaderProgram
+   this.resolutionLocation = gl.getUniformLocation(shaderProgram, "resolution");
     this.ipc.on("requireUpdate", function () {
       this.update()
     }.bind(this));
@@ -244,6 +269,9 @@ function ACIDRENDER(storage,ipc,canvas,mothership){
     }.bind(this));
     this.ipc.on("requireOneFramejump", function () {
       this.jump(1)
+    }.bind(this));
+    this.ipc.on("requireRefresh", function () {
+      this.refresh()
     }.bind(this));
     this.ipc.on("requireTenFramesjump", function () {
       this.jump(10)
