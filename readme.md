@@ -7,15 +7,15 @@ ACID features a clean graphic user interface that can be detached. ACID has buil
 
 This is how the interface looks:
 
-![](./img/screenshot-1.png)
+![](./img/screenshot-1.jpg)
 
 *GUI is opened in the main window*
 
-![](./img/screenshot-2.png)
+![](./img/screenshot-2.jpg)
 
 *GUI is undocked*
 
-![](./img/screenshot-3.png)
+![](./img/screenshot-3.jpg)
 
 *GUI and Render are both undocked*
 
