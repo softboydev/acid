@@ -1,37 +1,97 @@
-SCREEN
-The visual output is presented on a scalable screen.
-The screen is made up of pixels which can take an rgb color value.
-What is visible on the screen is determined by a set of layers.
+Invert edge param
 
-LAYERS
-Layers can be mixed in different ways and will be layered on top of each other in a specific order.
-A layer can have exactly one engine, that determines how virtual data is displayed visually.
-There are currently these engines available:
-s2D - pixelbased 2D engine
-c2D - cellbased 2D engine
-ASC - ASCII engine
+ASCII Layer
+"ascii": {
+  "fontsize": 24,
+  "spacing": 0.2,
+  "color": "#ffffff",
+  "chars": "-#+*",
+  "font": "mon",
+  "opacity": 0.8,
+  "mix": "nrm",
+  "update": 5
+},
+this.ascii.style.fontSize = this.config.render.ascii.fontsize + "px"
+this.ascii.style.opacity = this.config.render.ascii.opacity
+this.ascii.style.color = this.config.render.ascii.color
+let asciiStyle = "normal"
+switch(this.config.render.ascii.mode){
+  case "col":
+    asciiStyle = "color"
+    break
+  case "brn":
+    asciiStyle = "color-burn"
+    break
+  case "dod":
+    asciiStyle = "color-dodge"
+    break
+  case "drk":
+    asciiStyle = "darken"
+    break
+  case "dif":
+    asciiStyle = "difference"
+    break
+  case "exc":
+    asciiStyle = "exclusion"
+    break
+  case "hlg":
+    asciiStyle = "hard-light"
+    break
+  case "hue":
+    asciiStyle = "hue"
+    break
+  case "lgt":
+    asciiStyle = "lighten"
+    break
+  case "lum":
+    asciiStyle = "luminosity"
+    break
+  case "mlt":
+    asciiStyle = "multiply"
+    break
+  case "ovr":
+    asciiStyle = "overlay"
+    break
+  case "sat":
+    asciiStyle = "saturation"
+    break
+  case "scr":
+    asciiStyle = "screen"
+    break
+  case "slg":
+    asciiStyle = "soft-light"
+    break
+}
+this.ascii.style["mix-blend-mode"] = asciiStyle
 
-A layers contains a set of oscilators, algorithms and sources, which make up the total image data available
+BITMAP
 
-0-z - values between 0 and 35, serve to input parameters values
-A-Z - Variables
-+ - additive summing
-- - substractive summing
-* - multiplying summing
-/ - dividing summing
-% - modulating summing
+Bitmap Editor
+- clear
+- load image
+- x and y
+- store
 
-() - parameters for a function, not passing parameters sets them to 0 automatically
-[] - layer array of functions
+Bitmap oscilator
+- sources
+- scale and stretch
+- interpolate
+- scroll x and y
+- animation: blend/jump/vertical/horizontal
+- animationspeed
 
-LAYERS
 
+MATRIX
+Inputs on 1 Axis
+Outpouts on other axis
+Connections can change intensity
 
-SOURCES
-~(center,shape,frequency,speed,rotation,offset) - oscilator
-$(xspeed,xgrain,yspeed,ygrain,zspeed,zgrain) - noise algorithm
-!(index,relative width, relative height) - image
-#(width,height,binary) - sprite
+Basic Outputs
+Main Clock
+Render X
+Render Y
 
-FUNCTIONS
-=(min,max,lpf,hpf)
+Basic Inputs
+Render R
+Render G
+Render B

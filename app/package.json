@@ -1,6 +1,6 @@
 {
   "name": "ACID",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "ACID is short for Algorithms Create Image Data. ACID is a general purpose video synthesizer.",
   "main": "main.js",
   "scripts": {

@@ -37,7 +37,6 @@ module.exports = {
       config: {
         options: {
           name: "ACID",
-          version: "0.1",
           maintainer: 'Johannes Hassenstein',
           homepage: 'https://johassenstein.de',
           categories: ["AudioVideo","Video","Graphics"],

@@ -9,12 +9,23 @@ function ACIDGUI(storage,ipc){
     y: 0
   }
   this.tooltips = {
+    optimize: "<b>Optimization</b><br><p>Disable certain features when you dont use them. This can improve performance.</p>",
+    optimizefx: "<b>Toggle Effects</b><br><p>Will toggle the usage of effects.",
+    optimizesubpixels: "<b>Toggle Subpixels</b><br><p>Will toggle the rendering of subpixels. This can also be an artistic decision.</p>",
+    optimizefeedback: "<b>Toggle Feedback</b><br><p>Will toggle the virtual feedback engine.",
+    optimizecolors: "<b>Toggle Colormodes</b><br><p>Will toggle the availabilty of color modes.</p>",
+    analfps: "<b>FPS</b><br><p>Will display the true FPS</p>",
+    analwidth: "<b>Width</b><br><p>The current width of the main window</p>",
+    analheight: "<b>Height</b><br><p>The current height of the main window</p>",
     settings: "<b>Settings</b><br><p>General settings regarding the renderengine and the user interface.</p>",
     defaultcolor: "<b>Default Color</b><br><p>Sets the default color, when adding new colors in indexed color mode.</p>",
     defaulteffect: "<b>Default Effect</b><br><p>Sets the default effect, when adding new effects to an effects chain.</p>",
     settingsimage: "<b>General Render Settings</b><br><p>General settings regarding the renderengine.</p>",
     framerate: "<b>Framerate</b><br><p>Sets the framerate of the renderengine between 1 and 30 frames per second. High values may slow down or crash the software.</p>",
-    resolution: "<b>Resolution</b><br><p>Sets the minimum resolution for the renderengine. This setting functions primarily to not accidently slow dowm or crash the software, when changing other parameters.</p>",
+    resolution: "<b>Resolution</b><br><p>Sets the resolution for the renderengine in an undocked render window.</p>",
+    preview: "<b>Preview Settings</b><br><p>Settings for the renderengine in the main window.</p>",
+    previewframerate: "<b>Preview Framerate</b><br><p>Framerate in the main window.</p>",
+    previewresolution: "<b>Preview Resolution</b><br><p>Resolution in the main window.</p>",
     settingsgui: "<b>General GUI Settings</b><br><p>General settings regarding the graphic user interface.</p>",
     zoom: "<b>GUI Zoom</b><br><p>Changes the scale of the graphic user interface.</p>",
     transparency: "<b>GUI transparency</b><br><p>Changes the transparency of the graphic user interface.</p>",
@@ -49,6 +60,20 @@ function ACIDGUI(storage,ipc){
     bus: "<b>Bus</b><br><p>Settings in this section have influence on the master bus, that sums all the oscilator layers.</p>",
     amp: "<b>Amplification</b><br><p>Determines the master amplification of the sum.</p>",
     drive: "<b>Overdrive</b><br><p>Changes, how the amplifier handles to high values.</p>",
+    blackandwhite: "<b>Black and White</b><br><p>Fades between color and black and white version of the render</p>",
+    burn: "<b>Burn</b><br><p>Can be used to brighten the image by lightening the subpixel colors. Only used when subpixels are enabled.</p>",
+    channelmin:"<b>Channel Minimum</b><br><p>Will set the minimum values for all 3 color channels.</p>",
+    channelmod:"<b>Channel Modulation</b><br><p>Will set the maximum amount of modulation for all 3 color channels.</p>",
+    channelamp:"<b>Channel Amplitude</b><br><p>Will set the maximum values for all 3 color channels. Click on a channel to disable it.</p>",
+    feedback:"<b>Feedback</b><br><p>Settings for the virtual feedback engine. Only used when feedback is enabled.</p>",
+    fbint:"<b>Feedback Intensity</b><br><p>Set the intensity for the feedback. The higher the intensity the longer time periods are between each feedback step.</p>",
+    fbquant:"<b>Feedback Quantization</b><br><p>Set the quantization for the feedback. This will lead to the image getting more and more visible borders or edges.</p>",
+    fbcenter:"<b>Feedback Center</b><br><p>Set the relative center for the feedback tunnel.</p>",
+    fbmix:"<b>Feedback Mix</b><br><p>Blends between feedback on the horizontal and vertical axis.</p>",
+    fbbend:"<b>Feedback Bend</b><br><p>Sets how much the feedback may influence itself thus appearing more and more bend.</p>",
+    fbskew:"<b>Feedback Skew</b><br><p>Blends between vertical and horizontal bending.</p>",
+    fbsqr:"<b>Feedback Square</b><br><p>Blends between a linear, trianglish looking and a stepped, squarish, tv-ish looking version of the feedback.</p>",
+    fbdrk:"<b>Feedback Darken</b><br><p>Set how much darker the images get when they approach the feedback center.</p>",
     fx: "<b>Effects</b><br><p>Settings in this section set the parameters for the different available effect units.</p>",
     fxbit: "<b>Bitcrusher</b><br><p>Reduces the total amount of different values.</p>",
     fxcmp: "<b>Compressor</b><br><p>Amplifies low values more then higher ones.</p>",
@@ -70,6 +95,7 @@ function ACIDGUI(storage,ipc){
     osoff: "<b>Oscilator Offset</b><br>Offsets the oscilator by up to whole cycle. Mostly useful for moving a fixed oscilator to a certain position.<p>",
     osx: "<b>Oscilator X</b><br><p>Settings for the second dimension of algorithms.</p>",
     osy: "<b>Oscilator Y</b><br><p>Settings for the third dimensions of algorithms.</p>",
+    channel: "<b>Oscilator Channels</b><br><p>Sends to the 3 different color channels</p>",
     colorlist: "<b>Color List</b><br><p>An extendable list of colors. Click on --- to empty the list, click on + to add a new entry, click on an entry to change it.</p>",
     fxlist: "<b>Effect Chain</b><br><p>An extendable chain of effects. Effects are passed through from left to right. The settings of an effect are determined by the corresponding settings in an fx section. Click on --- to empty the list, click on + to add a new entry, click on an entry to change it.</p>"
   }
@@ -596,11 +622,6 @@ function ACIDGUI(storage,ipc){
       this.guiPosition.x = this.gui.scrollLeft
       this.guiPosition.y = this.gui.scrollTop
     }.bind(this))
-    document.addEventListener("keydown",function(e){
-      if(e.keyCode == 32 || e.which == 32){
-        this.toggle()
-      }
-    }.bind(this))
     this.ipc.on("requireUpdate", function () {
       this.update()
     }.bind(this));
@@ -609,6 +630,9 @@ function ACIDGUI(storage,ipc){
     }.bind(this));
     this.ipc.on("requireShowGUI", function () {
       this.show()
+    }.bind(this));
+    this.ipc.on("requireToggleGUI", function () {
+      this.toggle()
     }.bind(this));
     this.update()
   }

@@ -344,7 +344,8 @@ input[type=number]::-webkit-inner-spin-button {
 .osc0-type-sin tr.for-osc0-type-sin,
 .osc0-type-prl tr.for-osc0-type-prl,
 .osc0-type-plx tr.for-osc0-type-plx,
-.osc0-type-pwm tr.for-osc0-type-pwm{
+.osc0-type-pwm tr.for-osc0-type-pwm,
+.osc0-type-org tr.for-osc0-type-org{
   display: table-row;
 }
 .osc0-type-osc th.for-osc0-type-osc,
@@ -354,7 +355,8 @@ input[type=number]::-webkit-inner-spin-button {
 .osc0-type-sin th.for-osc0-type-sin,
 .osc0-type-prl th.for-osc0-type-prl,
 .osc0-type-plx th.for-osc0-type-plx,
-.osc0-type-pwm th.for-osc0-type-pwm{
+.osc0-type-pwm th.for-osc0-type-pwm,
+.osc0-type-org th.for-osc0-type-org{
   display: table-cell;
 }
 .for-osc1-type{
@@ -367,7 +369,8 @@ input[type=number]::-webkit-inner-spin-button {
 .osc1-type-sin tr.for-osc1-type-sin,
 .osc1-type-prl tr.for-osc1-type-prl,
 .osc1-type-plx tr.for-osc1-type-plx,
-.osc1-type-pwm tr.for-osc1-type-pwm{
+.osc1-type-pwm tr.for-osc1-type-pwm,
+.osc1-type-org tr.for-osc1-type-org{
   display: table-row;
 }
 .osc1-type-osc th.for-osc1-type-osc,
@@ -377,7 +380,8 @@ input[type=number]::-webkit-inner-spin-button {
 .osc1-type-sin th.for-osc1-type-sin,
 .osc1-type-prl th.for-osc1-type-prl,
 .osc1-type-plx th.for-osc1-type-plx,
-.osc1-type-pwm th.for-osc1-type-pwm{
+.osc1-type-pwm th.for-osc1-type-pwm,
+.osc1-type-org th.for-osc1-type-org{
   display: table-cell;
 }
 .for-osc2-type{
@@ -390,7 +394,8 @@ input[type=number]::-webkit-inner-spin-button {
 .osc2-type-sin tr.for-osc2-type-sin,
 .osc2-type-prl tr.for-osc2-type-prl,
 .osc2-type-plx tr.for-osc2-type-plx,
-.osc2-type-pwm tr.for-osc2-type-pwm{
+.osc2-type-pwm tr.for-osc2-type-pwm,
+.osc2-type-org tr.for-osc2-type-org{
   display: table-row;
 }
 .osc2-type-osc th.for-osc2-type-osc,
@@ -400,7 +405,8 @@ input[type=number]::-webkit-inner-spin-button {
 .osc2-type-sin th.for-osc2-type-sin,
 .osc2-type-prl th.for-osc2-type-prl,
 .osc2-type-plx th.for-osc2-type-plx,
-.osc2-type-pwm th.for-osc2-type-pwm{
+.osc2-type-pwm th.for-osc2-type-pwm,
+.osc2-type-org th.for-osc2-type-org{
   display: table-cell;
 }
 .for-osc3-type{
@@ -413,7 +419,8 @@ input[type=number]::-webkit-inner-spin-button {
 .osc3-type-sin tr.for-osc3-type-sin,
 .osc3-type-prl tr.for-osc3-type-prl,
 .osc3-type-plx tr.for-osc3-type-plx,
-.osc3-type-pwm tr.for-osc3-type-pwm{
+.osc3-type-pwm tr.for-osc3-type-pwm,
+.osc3-type-org tr.for-osc3-type-org{
   display: table-row;
 }
 .osc3-type-osc th.for-osc3-type-osc,
@@ -423,7 +430,8 @@ input[type=number]::-webkit-inner-spin-button {
 .osc3-type-sin th.for-osc3-type-sin,
 .osc3-type-prl th.for-osc3-type-prl,
 .osc3-type-plx th.for-osc3-type-plx,
-.osc3-type-pwm th.for-osc3-type-pwm{
+.osc3-type-pwm th.for-osc3-type-pwm,
+.osc3-type-org th.for-osc3-type-org{
   display: table-cell;
 }
 .for-osc4-type{
@@ -436,7 +444,8 @@ input[type=number]::-webkit-inner-spin-button {
 .osc4-type-sin tr.for-osc4-type-sin,
 .osc4-type-prl tr.for-osc4-type-prl,
 .osc4-type-plx tr.for-osc4-type-plx,
-.osc4-type-pwm tr.for-osc4-type-pwm{
+.osc4-type-pwm tr.for-osc4-type-pwm,
+.osc4-type-org tr.for-osc4-type-org{
   display: table-row;
 }
 .osc4-type-osc th.for-osc4-type-osc,
@@ -446,7 +455,8 @@ input[type=number]::-webkit-inner-spin-button {
 .osc4-type-sin th.for-osc4-type-sin,
 .osc4-type-prl th.for-osc4-type-prl,
 .osc4-type-plx th.for-osc4-type-plx,
-.osc4-type-pwm th.for-osc4-type-pwm{
+.osc4-type-pwm th.for-osc4-type-pwm,
+.osc4-type-org th.for-osc4-type-org{
   display: table-cell;
 }
 input[type=range] {
@@ -455,7 +465,9 @@ input[type=range] {
   background: transparent; /* Otherwise white in Chrome */
   transform: translateY(-0.4ch)
 }
-
+.text-input{
+  width: 100% !important; /* Specific width is required for Firefox. */
+}
 input[type=range]::-webkit-slider-thumb {
   -webkit-appearance: none;
 }
@@ -525,4 +537,16 @@ input[type=range]::-webkit-slider-runnable-track {
 }
 .fx-flag-off .for-fx-active{
   display: none;
+}
+#ascii{
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  color: white;
+  white-space: nowrap;
+  font-size: 12px;
+  line-height: 1em;
+  letter-spacing: calc(1em - 1ch);
+  mix-blend-mode: difference;
 }
