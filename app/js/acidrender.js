@@ -120,41 +120,50 @@ function ACIDRENDER(storage,ipc,canvas,textlayer,mothership,env){
     let grayscale = this.config.render.grayscale
     var y = 0
     var x = 0
-    var r,g,b,a,rgb,bw,timeshift,relX,relY,centeredRelX,centeredRelX,n,m,isEdge,lShift,sShift,darken,q
+    var r,g,b,a,rgb,bw,timeshift,relX,relY,centeredRelX,centeredRelX,n,m,isEdge,lShift,sShift,darken,q, mono
 
-    // var lastLine = -1
-    // var currentLine = 0
-    // var writeLine = false
-    // var lastCell = -1
-    // var currentCell = 0
-    // var writeCell = 0
-    // var asciiString = ""
-    //
-    // var upperLine = Math.floor(Math.floor(this.dimensions.height / this.config.render.ascii.fontsize) * 0.5 * this.config.render.ascii.spacing)
-    // var lowerLine = Math.floor(this.dimensions.height / this.config.render.ascii.fontsize) - upperLine
-    // var leftCell = Math.floor(Math.floor(this.dimensions.width / this.config.render.ascii.fontsize) * 0.5 * this.config.render.ascii.spacing)
-    // var rightCell = Math.floor(this.dimensions.width / this.config.render.ascii.fontsize) - leftCell
+    var lastLine = -1
+    var currentLine = 0
+    var writeLine = false
+    var lastCell = -1
+    var currentCell = 0
+    var writeCell = false
+    var asciiString = ""
+    var asciiFlag = this.config.render.optimization.ascii == "on"
+    var monoFlag = this.config.render.mono
+    var clipBackground = this.config.render.ascii.fixedBackground == "on"
+    var applyToCharacters = this.config.render.ascii.applyToCharacters == "on"
+    // var fontWidth = this.env == "main" ? Math.round(this.config.render.ascii.previewfontwidth) : Math.round(this.config.render.ascii.fontwidth)
+    // var fontHeight = this.env == "main" ? Math.round(this.config.render.ascii.previewfontsize) : Math.round(this.config.render.ascii.fontsize)
+    var fontWidth = Math.round(this.config.render.ascii.fontwidth)
+    var fontHeight = Math.round(this.config.render.ascii.fontsize)
+    var fontSpacing = 0 || this.config.render.ascii.spacing
+    var upperLine = Math.floor(Math.floor(this.dimensions.height / fontHeight) * 0.5 * fontSpacing)
+    // var upperLine = 0
+    var lowerLine = Math.floor(this.dimensions.height / fontHeight) - upperLine
+    var leftCell = Math.floor(Math.floor(this.dimensions.width / fontWidth) * 0.5 * fontSpacing)
+    var rightCell = Math.floor(this.dimensions.width / fontWidth) - leftCell
 
     while(y < this.dimensions.height){
-      // writeLine = false
-      // writeCell = false
-      // lastCell = -1
-      // currentLine = Math.floor(y / this.config.render.ascii.fontsize)
-      // if(currentLine > lastLine){
-      //   lastLine = currentLine
-      //   writeLine = true
-      // }
-
+      if(asciiFlag){
+        writeLine = false
+        writeCell = false
+        lastCell = -1
+        currentLine = Math.floor(y / fontHeight)
+        if(currentLine > lastLine){
+          lastLine = currentLine
+          writeLine = true
+        }
+      }
       while(x < this.dimensions.width){
-        // isEdge = false
-        // if(writeLine){
-        //   writeCell = false
-        //   currentCell = Math.floor(x / this.config.render.ascii.fontsize)
-        //   if(currentCell > lastCell){
-        //     lastCell = currentCell
-        //     writeCell = true
-        //   }
-        // }
+        if(writeLine){
+          writeCell = false
+          currentCell = Math.floor(x / fontWidth)
+          if(currentCell > lastCell){
+            lastCell = currentCell
+            writeCell = true
+          }
+        }
         if(feedback){
           relX = x / this.dimensions.width // 0 - 1
           centeredRelX = relX <= this.config.render.feedback.centerX ? relX / this.config.render.feedback.centerX : 1- ((relX - this.config.render.feedback.centerX) / (1 - this.config.render.feedback.centerX))// 0 - 1 - 0
@@ -182,12 +191,14 @@ function ACIDRENDER(storage,ipc,canvas,textlayer,mothership,env){
           r = this.config.render.channels.r.active ? ((this.config.render.channels.r.base + rgb[0] * this.config.render.channels.r.mod) * this.config.render.channels.r.amp): 0
           g = this.config.render.channels.g.active ? ((this.config.render.channels.g.base + rgb[1] * this.config.render.channels.g.mod) * this.config.render.channels.g.amp): 0
           b = this.config.render.channels.b.active ? ((this.config.render.channels.b.base + rgb[2] * this.config.render.channels.b.mod) * this.config.render.channels.b.amp): 0
-          // a = this.config.render.channels.a.active ? ((this.config.render.channels.a.base + rgb[3] * this.config.render.channels.a.mod) * this.config.render.channels.a.amp): 0
+          a = this.config.render.channels.a.active ? ((this.config.render.channels.a.base + rgb[3] * this.config.render.channels.a.mod) * this.config.render.channels.a.amp): 0
         }
         bw = (0.2126 * r + 0.7152 * g + 0.0722 * b)
+        mono = bw > 0.5
+
         // isEdge = !((Math.floor(bw * 100) * 0.1) % 1) && bw > 0.1 && bw < 0.9 && false
         // let bw = 1
-        if(this.config.render.mod != "rgb" && colormodes){
+        if(this.config.render.mod != "rgb" && colormodes && !monoFlag){
           switch(this.config.render.mod){
             case "ndx":
               let c = this.config.render.clrs[Math.min(Math.floor(this.config.render.clrs.length * bw),(this.config.render.clrs.length - 1))] || {r:0,g:0,b:0}
@@ -205,37 +216,43 @@ function ACIDRENDER(storage,ipc,canvas,textlayer,mothership,env){
               break
           }
         }
-        // if(subpixels && !isEdge){
-        if(subpixels){
+        if(subpixels && !monoFlag){
           colors.push(r * (1-grayscale) + bw * grayscale,this.config.render.burn,this.config.render.burn,this.config.render.burn,g * (1-grayscale) + bw * grayscale,this.config.render.burn,this.config.render.burn,this.config.render.burn,b * (1-grayscale) + bw * grayscale)
           vertices.push((x / this.dimensions.width * 2) - 1,-((y / this.dimensions.height * 2) - 1),(x / this.dimensions.width * 2) - 1,-(((y + 0.33333333 * res) / this.dimensions.height * 2) - 1),(x / this.dimensions.width * 2) - 1,-(((y + 0.66666666 * res) / this.dimensions.height * 2) - 1))
           verticeN+=3
         }
         else{
-          // if(isEdge){
-          //   colors.push(1,0,0)
-          // }
-          // else{
-            colors.push(r * (1-grayscale) + bw * grayscale,g * (1-grayscale) + bw * grayscale,b * (1-grayscale) + bw * grayscale)
-          // }
+          colors.push(r * (1-grayscale) + bw * grayscale,g * (1-grayscale) + bw * grayscale,b * (1-grayscale) + bw * grayscale)
           vertices.push(
             ((x / this.dimensions.width * 2) - 1),
-            -((y / this.dimensions.height * 2) - 1),
+            -((y / this.dimensions.height * 2) - 1)
           )
           verticeN+=1
         }
-        // if(writeCell && (currentLine >= upperLine) && (currentLine <= lowerLine) && (currentCell >= leftCell) && (currentCell <= rightCell)){
-        //   let char = Math.floor(a * this.config.render.ascii.chars.length) || 0
-        //   char = char > (this.config.render.ascii.chars.length - 1) ? (this.config.render.ascii.chars.length - 1) : char
-        //   asciiString += this.config.render.ascii.chars.charAt(char)
-        // }
-        x+=res
+        if(writeCell && (currentLine >= upperLine) && (currentLine <= lowerLine) && (currentCell >= leftCell) && (currentCell <= rightCell)){
+          let char = Math.floor(a * this.config.render.ascii.chars.length) || 0
+          let c = Math.floor(a * this.config.render.ascii.colors.length) || 0
+          let color, background
+          char = char > (this.config.render.ascii.chars.length - 1) ? (this.config.render.ascii.chars.length - 1) : char
+          if(applyToCharacters){
+            //TODO
+            color = "rgb(" + (r * (1-grayscale) + bw * grayscale) * 255 + "," + (g * (1-grayscale) + bw * grayscale) * 255 + "," + (b * (1-grayscale) + bw * grayscale) * 255 + ")"
+            // console.log(color);
+            background = this.config.render.ascii.colors[c]
+          }
+          else{
+            color = this.config.render.ascii.colors[c]
+            background = "transparent"
+          }
+          asciiString += "<div style='background:" + background + ";color: " + color + "; width:" + fontWidth + "px; height:" + fontHeight + "px; text-align: center;'>" + this.config.render.ascii.chars.charAt(char) + "</div>"
+        }
+        x += clipBackground ? fontWidth : res
       }
       x = 0
-      y += res
-      // if(writeLine){
-      //   asciiString += "<br>"
-      // }
+      y += clipBackground ? fontHeight : res
+      if(writeLine){
+        asciiString += "<br>"
+      }
     }
     //WEBGL RENDER
     let colorBuffer = gl.createBuffer();
@@ -253,7 +270,16 @@ function ACIDRENDER(storage,ipc,canvas,textlayer,mothership,env){
     gl.clear(gl.COLOR_BUFFER_BIT);
     gl.drawArrays(gl.POINTS, 0, verticeN)
     //ASCII RENDER
-    // this.ascii.innerHTML = asciiString
+    if(asciiFlag){
+      this.ascii.style.fontSize = this.config.render.ascii.fontsize + "px"
+      this.ascii.style.lineHeight = this.config.render.ascii.fontsize + "px"
+      this.ascii.style.opacity = this.config.render.ascii.opacity
+      this.ascii.style.mixBlendMode = this.config.render.ascii.mix
+      this.ascii.innerHTML = asciiString
+    }
+    else{
+      this.ascii.innerHTML = ""
+    }
     //UPCOUNT
     if(this.running){
       this.upCount()

@@ -82,11 +82,28 @@ function randomPatch(save){
               resolution: config.render.resolution,
               preview: config.render.preview,
               previewframerate: config.render.previewframerate,
+              previewwidth: 240,
+              previewheight: 240,
               grayscale: config.render.grayscale,
               mod: config.render.mod,
               burn: config.render.burn,
               clrs:config.render.clrs,
+              ascii: {
+                font: "monospace",
+                fontsize: config.render.ascii.fontsize,
+                previewfontsize: config.render.ascii.previewfontsize,
+                fontwidth: config.render.ascii.fontwidth,
+                previewfontwidth: config.render.ascii.previewfontwidth,
+                spacing: config.render.ascii.spacing,
+                opacity: config.render.ascii.opacity,
+                mix: config.render.ascii.mix,
+                colors: config.render.ascii.colors,
+                chars: "-+*",
+                fixedBackground: config.render.ascii.fixedBackground,
+                applyToCharacters: config.render.ascii.applyToCharacters
+              },
               optimization: {
+                ascii: config.render.optimization.ascii,
                 effects: config.render.optimization.effects,
                 subpixels: config.render.optimization.subpixels,
                 feedback: config.render.optimization.feedback,
@@ -589,7 +606,8 @@ function createMenu(){
       submenu: [
         { role: 'reload' },
         { role: 'forceReload' },
-        { role: 'togglefullscreen' }
+        { role: 'togglefullscreen' },
+        { role: 'toggleDevTools' }
       ]
     },
     // { role: 'windowMenu' }
@@ -603,8 +621,8 @@ function createMenu(){
         { label: 'Show GUI', click (s){displayGUI(true);}, type: 'normal'},
         { label: 'Hide GUI', click (s){displayGUI(false);}, type: 'normal'},
         { type: 'separator' },
-        { label: 'Undock GUI',click (s){createGUI();}, type: 'normal', },
-        { label: 'Destroy GUI',click (s){destroyGUI();}, type: 'normal', },
+        // { label: 'Undock GUI',click (s){createGUI();}, type: 'normal', },
+        // { label: 'Destroy GUI',click (s){destroyGUI();}, type: 'normal', },
         { label: 'Undock Render',click (s){createRender();}, type: 'normal', },
         { label: 'Destroy Render',click (s){destroyRender();}, type: 'normal', },
         ...(isMac ? [

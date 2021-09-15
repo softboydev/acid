@@ -592,12 +592,12 @@ function ACIDGUI(storage,ipc){
                       ui.classList.remove("toggle-active")
                     }
                     ui.classList.add("toggle-action")
-                    ui.addEventListener("mouseenter",function(e){
-                      e.target.innerText = "I/O"
-                    })
-                    ui.addEventListener("mouseleave",function(e){
-                      e.target.innerText = ot
-                    },ot)
+                    // ui.addEventListener("mouseenter",function(e){
+                    //   e.target.innerText = "toggle " + ot
+                    // })
+                    // ui.addEventListener("mouseleave",function(e){
+                    //   e.target.innerText = ot
+                    // },ot)
                     ui.addEventListener("click",function(e){
                       let flag = this.toggleOption(e.target.id)
                       if(flag){
