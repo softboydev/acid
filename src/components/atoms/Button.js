@@ -7,8 +7,11 @@ export default class Button extends React.Component {
   constructor(props) {
     super(props);
   }
+  text(){
+    return this.props.useShorts && this.props.short ? this.props.short : this.props.text
+  }
   render() {
-    let classNames = []
+    let classNames = this.props.className ? this.props.className.split(" ") : []
     if(this.props.text){
       classNames.push("auto")
     }
@@ -16,7 +19,7 @@ export default class Button extends React.Component {
       classNames.push("active")
     }
     return (
-      <button className={classNames.join(" ")} onClick={this.props.callback}>{this.props.text || this.props.icon}</button>
+      <button className={classNames.join(" ")} onClick={this.props.callback}>{this.text() || this.props.icon}</button>
     );
   }
 }

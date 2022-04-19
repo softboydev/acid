@@ -30,10 +30,13 @@ export default class PanelOption extends React.Component {
         <td>
           <Option callback={this.update.bind(this)} option={this.props.option} options={this.props.options} optionsShort={this.props.optionsShort} useShorts={this.props.useShorts}/>
         </td>
+        {(this.props.showInputs) &&
         <td>
+
         </td>
+        }
         {this.props.showTooltips &&
-        <td>
+        <td class="left">
           <Help description={this.props.description}/>
         </td>
         }

@@ -1,4 +1,4 @@
-@font-face {
+/* @font-face {
     font-family: "Monospace";
     font-weight: 400;
     src: url("./fonts/Roboto_Mono/static/RobotoMono-Regular.ttf");
@@ -7,26 +7,74 @@
     font-family: "Monospace";
     font-weight: 700;
     src: url("./fonts/Roboto_Mono/static/RobotoMono-Bold.ttf");
+} */
+@font-face {
+    font-family: "Elektron";
+    font-weight: 400;
+    src: url("./fonts/acidatm.ttf");
+}
+html{
+    font-size: 14px;
 }
 body{
   width: 100%;
   height: 100%;
   background: black;
-  font-size: 16px;
   text-transform: uppercase;
 }
 main{
-  padding: 1rem;
+  position: fixed;
+  width: calc(100% - 2rem);
+  height: calc(100% - 2rem);
+  top: 1rem;
+  left: 1rem;
+  background: #111111;
+}
+.container{
+  position: absolute;
+  overflow: hidden;
+  top: 0;
+  height: 100vh;
+  width: 30vw;
+  background: black;
+}
+.container.left{
+  left:0;
+  /* border-right: 0.05rem solid white; */
+}
+.container.right{
+  right:0;
+  /* border-left: 0.05rem solid white; */
+}
+.container.head{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2rem;
+  /* border-bottom: 0.05rem solid white; */
+  overflow: hidden;
+  overflow-x: auto;
+}
+.container.body{
+  position: absolute;
+  top: 2rem;
+  left: 0;
+  width: calc(100% - 1rem);
+  height: calc(100% - 2rem);
+  padding: 0.5rem;
+  overflow: auto;
 }
 *{
-  font-family: "Monospace",monospace;
+  font-family: "Elektron",monospace;
   font-weight: 400;
   color: white;
   appearance: none;
   user-select: none;
 }
 ::selection,::-moz-selection{
-  background: white;
+  background-color: white;
+  background: none;
   color: black;
 }
 table{
@@ -34,16 +82,15 @@ table{
   line-height: 1rem;
   padding: 0;
   margin: 0;
-  white-space: pre;
   display: inline-block;
   position: relative;
   position: relative;
   vertical-align: top;
+  width: auto;
 }
 span{
   line-height: 1rem;
   height: 1rem;
-  padding: 0.25rem 0.5rem;
 }
 tbody{
   display: table-row-group;
@@ -51,25 +98,27 @@ tbody{
 th{
   color: white;
   text-align: left;
-  /* border-right: 0.1rem solid white; */
 }
 td,th{
   height: 1rem;
+  min-width: 3.5ch;
   vertical-align: text-bottom;
-  /* border-right: 0.1rem solid white; */
 }
-td:last-of-type{
-  border: 0;
-}
-th,td,tr,table{
-  outline: 0.1rem solid white;
-  /* padding: 0.2rem 0.5rem; */
+td,th,tr{
+  white-space: pre;
 }
 td,th{
   padding: 0;
-  /* padding: 0.1rem 0.5rem;
-  padding: 0;
-  padding: 0.1rem 0.2rem; */
+  padding-right: 0.5rem;
+}
+th span{
+  color: #cccccc;
+  height: 1.2rem;
+  display: inline-block;
+  padding-top: 0.3rem;
+}
+tr{
+  border-bottom: 0.1px solid #888888;
 }
 input{
   width: 3ch;
@@ -80,11 +129,10 @@ input{
   outline: none;
   text-align: left;
   color: inherit;
-  color: #cccccc;
+  color: #dedede;
   font-size: 1rem;
 }
 input:hover{
-  font-weight: bold;
   color: #ffffff;
 }
 input[type=text]{
@@ -106,7 +154,6 @@ input[type=range] {
   border: 0.1rem solid white;
   margin: 0;
   -webkit-appearance: none; /* Hides the slider so that custom slider can be made */
-  /* width: 3ch !important; /* Specific width is required for Firefox. */
   width: 10ch !important;
   background: transparent; /* Otherwise white in Chrome */
 }
@@ -136,13 +183,6 @@ input[type=range]::-webkit-slider-runnable-track {
   width: 100%;
   height: 1rem;
   cursor: pointer;
-  /* background: repeating-linear-gradient(
-    90deg,
-    white,
-    white 0.06rem,
-    black 0.06rem,
-    black 0.2rem
-  ); */
   background: black;
   border: none;
 }
@@ -153,11 +193,12 @@ input[type='range'] {
   background-color: white;
 }
 button{
-  font-family: "Monospace",monospace;
+  font-family: "Elektron",monospace;
   text-transform: uppercase;
   width: 1rem;
   height: 1rem;
-  font-size: 0.7rem;
+  /* font-size: 0.7rem; */
+  font-size: 1rem;
   line-height: 1rem;
   vertical-align: middle;
   padding: 0;
@@ -168,27 +209,45 @@ button{
   outline: none;
   background: transparent;
   cursor: pointer;
-  outline: 0.15rem solid white;
+  /* outline: 0.15rem solid #888888; */
+  outline: 0 solid black;
   margin: 0.4rem 0.25rem;
   user-select: none;
+  color: #888888;
+}
+button.primary{
+  outline-color: #cccccc;
+  color: #cccccc;
 }
 button.auto{
   width: auto;
 }
+button.tab{
+  font-size: 1rem;
+  margin: 0;
+  outline: 0;
+  padding: 0.5rem;
+  height: 2rem;
+  color: #cccccc;
+}
 button:hover,button.active{
+  outline-color: white;
   background: white;
   color: black;
   transition: all 0.2s ease-in-out;
 }
+
 /* The switch - the box around the slider */
 .switch {
  position: relative;
  display: inline-block;
+ /* width: calc(3ch - 0.2rem); */
  width: calc(3ch - 0.2rem);
  height: 0.8rem;
  vertical-align: middle;
- transform: translate(4px,-1px);
- margin: 0.25rem calc(2.5ch - 0.1rem);
+
+ transform: translate(0,-0.2rem);
+ /* margin: 0.25rem calc(2.5ch - 0.1rem); */
 }
 
 /* Hide default HTML checkbox */
@@ -209,19 +268,21 @@ button:hover,button.active{
  background-color: black;
  -webkit-transition: .4s;
  transition: .4s;
- outline: 0.1rem solid white;
+ border: 0.1rem solid white;
+ border-radius: 0.5rem;
  padding: 0;
 }
 
 .slider:before {
  position: absolute;
  content: "";
- height: 0.4rem;
- width: 0.4rem;
- left: 0.1rem;
- bottom: 0.1rem;
+ height: 0.7rem;
+ width: 0.7rem;
+ left: 0.15rem;
+ bottom: 0.15rem;
  background-color: white;
  transition: 0.2s ease-in-out;
+ border-radius: 0.4rem;
 }
 
 input:checked + .slider {
@@ -232,7 +293,7 @@ input:checked + .slider:before {
 }
 
 input:checked + .slider:before {
- transform: translateX(0.6rem);
+ transform: translateX(0.85rem);
 }
 .help{
   padding: 0.5rem;

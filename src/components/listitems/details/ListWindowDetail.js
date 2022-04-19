@@ -24,7 +24,7 @@ export default class ListWindowDetail extends ListItem {
       <PanelSlider name="Resolution" short="Res"
         target="resolution"
         value={this.state.resolution}
-        relative={true}
+        min={1} max={512}
         callback={this.update.bind(this)} useShorts={this.props.useShorts} showButtons={this.props.showButtons} showLabels={this.props.showLabels} showTooltips={this.props.showTooltips} showInputs={this.props.showInputs}
         description="Sets the windows resolution"
       />
@@ -37,7 +37,7 @@ export default class ListWindowDetail extends ListItem {
       <PanelSlider name="Framerate" short="Fps"
         target="framerate"
         value={this.state.framerate}
-        relative={true} min={1} max={30} relative={false}
+        min={1} max={30} relative={false}
         callback={this.update.bind(this)} useShorts={this.props.useShorts} showButtons={this.props.showButtons} showLabels={this.props.showLabels} showTooltips={this.props.showTooltips} showInputs={this.props.showInputs}
         description="Sets the desired bpm to use as clocking"
       />

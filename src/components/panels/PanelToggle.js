@@ -36,7 +36,7 @@ export default class PanelToggle extends React.Component {
         </td>
         }
         {(this.props.showButtons || this.props.showTooltips) &&
-          <td>
+          <td className="left">
             {this.props.showTooltips &&
             <Help description={this.props.description}/>
             }

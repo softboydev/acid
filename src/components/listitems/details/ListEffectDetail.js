@@ -20,7 +20,7 @@ export default class ListEffectDetail extends ListItem {
       <PanelToggle name="Bypass" short="Byp"
         target="bypass"
         value={this.state.bypass}
-        callback={this.update.bind(this)} useShorts={this.props.useShorts} showTooltips={this.props.showTooltips}
+        callback={this.update.bind(this)} useShorts={this.props.useShorts} showTooltips={this.props.showTooltips} showInputs={this.props.showInputs}
         description="Toggles the bypass"
       />
       <PanelSlider name="Send" short="Snd"

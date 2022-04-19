@@ -94,6 +94,9 @@ export default class PanelList extends React.Component {
   actions(){
     return this.props.actions != null ? this.props.actions : true
   }
+  tabed(){
+    return this.props.tabed != null ? true : false
+  }
   static getDerivedStateFromProps(props, state) { // for controlled lists
     if(props.controller != null){ //check if list is conrolled
       if(props.controller.list != state.list){ //checks if controller list has derived
@@ -133,21 +136,24 @@ export default class PanelList extends React.Component {
     const structure = this.props.default
     let listItems = this.state.list.map((n,i) =>
       <tr key={n.id.toString()}>
+      {this.selectable() && this.selected(n.id) && !this.tabed() && <td></td>}
       {!this.selectable() || this.selected(n.id) ?
-        <Component{...n } channels={this.props.channels} useShorts={this.props.useShorts} showButtons={this.props.showButtons} showLabels={this.props.showLabels} showTooltips={this.props.showTooltips} showInputs={this.props.showInputs} structure={structure} callback={this.update.bind(this,i)}/>
-        : <Overview{...n } useShorts={this.props.useShorts} showButtons={this.props.showButtons} showLabels={this.props.showLabels} showTooltips={this.props.showTooltips} showInputs={this.props.showInputs} structure={structure} callback={this.update.bind(this,i)}/>
+        <React.Fragment>{this.tabed() && <td></td>}<Component{...n } channels={this.props.channels} useShorts={this.props.useShorts} showButtons={this.props.showButtons} showLabels={this.props.showLabels} showTooltips={this.props.showTooltips} showInputs={this.props.showInputs} structure={structure} callback={this.update.bind(this,i)}/></React.Fragment>
+        : <React.Fragment>{this.tabed() && <td></td>}<Overview{...n } useShorts={this.props.useShorts} showButtons={this.props.showButtons} showLabels={this.props.showLabels} showTooltips={this.props.showTooltips} showInputs={this.props.showInputs} structure={structure} callback={this.update.bind(this,i)}/></React.Fragment>
       }
-      {!this.controlled()  && this.actions() &&
+      {this.selectable() && this.selected(n.id) && this.tabed() && <td></td>}
         <td>
-          <Button callback={this.up.bind(this,i)} icon="&#9650;"/>
-          <Button callback={this.down.bind(this,i)} icon="&#9660;"/>
-          <Button callback={this.destroy.bind(this,i)} icon="-"/>
+        {!this.controlled()  && this.actions() &&
+          <React.Fragment>
+            <Button callback={this.up.bind(this,i)} icon="&#9650;"/>
+            <Button callback={this.down.bind(this,i)} icon="&#9660;"/>
+            <Button callback={this.destroy.bind(this,i)} icon="-"/>
+          </React.Fragment>
+        }
         </td>
-      }
-
         {this.selectable() &&
           <td>
-            <Button callback={this.select.bind(this,n)} text="Edit" active={n.id == this.state.selected}/><br></br>
+            <Button className="primary" callback={this.select.bind(this,n)} text="Edt" active={n.id == this.state.selected}/><br></br>
           </td>
         }
       </tr>
@@ -156,14 +162,15 @@ export default class PanelList extends React.Component {
       <React.Fragment>
       {listItems}
       <tr key="buttons">
+      {this.tabed() && <td></td>}
       {!this.controlled() &&
         <React.Fragment>
-          <Button callback={this.add.bind(this)} icon="+"/>
+          <Button className="primary" callback={this.add.bind(this)} icon="+"/>
           <Button callback={this.remove.bind(this)} icon="-"/>
-          <Button callback={this.clear.bind(this)} icon="C"/>
+          {false && <Button callback={this.clear.bind(this)} icon="C"/>}
         </React.Fragment>
       }
-      {this.props.showTooltips &&
+      {this.props.showTooltips && false &&
       <Help description={this.props.description}/>
       }
       </tr>

@@ -28,7 +28,6 @@ export default class ListLayerDetail extends ListItem {
       <PanelSlider name="Opacity" short="Opc"
         target="opacity"
         value={this.state.opacity}
-        relative={true}
         callback={this.update.bind(this)} useShorts={this.props.useShorts} showButtons={this.props.showButtons} showLabels={this.props.showLabels} showTooltips={this.props.showTooltips} showInputs={this.props.showInputs}
         description="Sets the opacity value for this layer"
       />
@@ -58,28 +57,24 @@ export default class ListLayerDetail extends ListItem {
       <PanelSlider name="Frequency" short="Frq"
         target="frequency"
         value={this.state.frequency}
-        relative={true}
         callback={this.update.bind(this)} useShorts={this.props.useShorts} showButtons={this.props.showButtons} showLabels={this.props.showLabels} showTooltips={this.props.showTooltips} showInputs={this.props.showInputs}
         description="Sets the repeat frequency"
       />
       <PanelSlider name="Offset" short="Off"
         target="offset"
         value={this.state.offset}
-        relative={true}
         callback={this.update.bind(this)} useShorts={this.props.useShorts} showButtons={this.props.showButtons} showLabels={this.props.showLabels} showTooltips={this.props.showTooltips} showInputs={this.props.showInputs}
         description="Sets the fixed offset between 0 and the frequency"
       />
       <PanelSlider name="Drift" short="Det"
         target="drift"
         value={this.state.drift}
-        relative={true}
         callback={this.update.bind(this)} useShorts={this.props.useShorts} showButtons={this.props.showButtons} showLabels={this.props.showLabels} showTooltips={this.props.showTooltips} showInputs={this.props.showInputs}
         description="Sets the linear consistent drift bidirectioanl"
       />
       <PanelSlider name="Rotation" short="Rot"
         target="rotation"
         value={this.state.rotation}
-        relative={true}
         callback={this.update.bind(this)} useShorts={this.props.useShorts} showButtons={this.props.showButtons} showLabels={this.props.showLabels} showTooltips={this.props.showTooltips} showInputs={this.props.showInputs}
         description="Sets the visual 2D rotation"
       />
@@ -89,14 +84,12 @@ export default class ListLayerDetail extends ListItem {
       <PanelSlider name="Shape" short="Shp"
         target="shape"
         value={this.state.shape}
-        relative={true}
         callback={this.update.bind(this)} useShorts={this.props.useShorts} showButtons={this.props.showButtons} showLabels={this.props.showLabels} showTooltips={this.props.showTooltips} showInputs={this.props.showInputs}
         description="Sets the waveshape"
       />
       <PanelSlider name="Center" short="Cen"
         target="center"
         value={this.state.center}
-        relative={true}
         callback={this.update.bind(this)} useShorts={this.props.useShorts} showButtons={this.props.showButtons} showLabels={this.props.showLabels} showTooltips={this.props.showTooltips} showInputs={this.props.showInputs}
         description="Sets the waveshapes center"
       />
@@ -106,42 +99,36 @@ export default class ListLayerDetail extends ListItem {
       <PanelSlider name="X Frequency" short="XFr"
         target="xfrequency"
         value={this.state.xfrequency}
-        relative={true}
         callback={this.update.bind(this)} useShorts={this.props.useShorts} showButtons={this.props.showButtons} showLabels={this.props.showLabels} showTooltips={this.props.showTooltips} showInputs={this.props.showInputs}
         description="Frequency on the X Axis"
       />
       <PanelSlider name="X Offset" short="XOf"
         target="xoffset"
         value={this.state.xoffset}
-        relative={true}
         callback={this.update.bind(this)} useShorts={this.props.useShorts} showButtons={this.props.showButtons} showLabels={this.props.showLabels} showTooltips={this.props.showTooltips} showInputs={this.props.showInputs}
         description="Offset on the X Axis"
       />
       <PanelSlider name="Y Frequency" short="YFr"
         target="yfrequency"
         value={this.state.yfrequency}
-        relative={true}
         callback={this.update.bind(this)} useShorts={this.props.useShorts} showButtons={this.props.showButtons} showLabels={this.props.showLabels} showTooltips={this.props.showTooltips} showInputs={this.props.showInputs}
         description="Frequency on the Y Axis"
       />
       <PanelSlider name="Y Offset" short="YOf"
         target="yoffset"
         value={this.state.yoffset}
-        relative={true}
         callback={this.update.bind(this)} useShorts={this.props.useShorts} showButtons={this.props.showButtons} showLabels={this.props.showLabels} showTooltips={this.props.showTooltips} showInputs={this.props.showInputs}
         description="Offset on the Y Axis"
       />
       <PanelSlider name="Z Frequency" short="ZFr"
         target="zfrequency"
         value={this.state.zfrequency}
-        relative={true}
         callback={this.update.bind(this)} useShorts={this.props.useShorts} showButtons={this.props.showButtons} showLabels={this.props.showLabels} showTooltips={this.props.showTooltips} showInputs={this.props.showInputs}
         description="Frequency on the Z Axis"
       />
       <PanelSlider name="Z Offset" short="ZOf"
         target="zoffset"
         value={this.state.zoffset}
-        relative={true}
         callback={this.update.bind(this)} useShorts={this.props.useShorts} showButtons={this.props.showButtons} showLabels={this.props.showLabels} showTooltips={this.props.showTooltips} showInputs={this.props.showInputs}
         description="Offset on the Z Axis"
       />
@@ -151,28 +138,24 @@ export default class ListLayerDetail extends ListItem {
       <PanelSlider name="Minimum" short="Min"
         target="min"
         value={this.state.min}
-        relative={true}
         callback={this.update.bind(this)} useShorts={this.props.useShorts} showButtons={this.props.showButtons} showLabels={this.props.showLabels} showTooltips={this.props.showTooltips} showInputs={this.props.showInputs}
         description="Offset on the Z Axis"
       />
       <PanelSlider name="Maximum" short="Max"
         target="max"
         value={this.state.max}
-        relative={true}
         callback={this.update.bind(this)} useShorts={this.props.useShorts} showButtons={this.props.showButtons} showLabels={this.props.showLabels} showTooltips={this.props.showTooltips} showInputs={this.props.showInputs}
         description="Offset on the Z Axis"
       />
       <PanelSlider name="Low Pass Filter" short="Lpf"
         target="lpf"
         value={this.state.lpf}
-        relative={true}
         callback={this.update.bind(this)} useShorts={this.props.useShorts} showButtons={this.props.showButtons} showLabels={this.props.showLabels} showTooltips={this.props.showTooltips} showInputs={this.props.showInputs}
         description="Offset on the Z Axis"
       />
       <PanelSlider name="High Pass Filter" short="Hpf"
         target="hpf"
         value={this.state.hpf}
-        relative={true}
         callback={this.update.bind(this)} useShorts={this.props.useShorts} showButtons={this.props.showButtons} showLabels={this.props.showLabels} showTooltips={this.props.showTooltips} showInputs={this.props.showInputs}
         description="Offset on the Z Axis"
       />
@@ -188,7 +171,6 @@ export default class ListLayerDetail extends ListItem {
       <PanelSlider name="Bypass Send" short="Snd"
         target="send"
         value={this.state.send}
-        relative={true}
         callback={this.update.bind(this)} useShorts={this.props.useShorts} showButtons={this.props.showButtons} showLabels={this.props.showLabels} showTooltips={this.props.showTooltips} showInputs={this.props.showInputs}
         description="Send used for all channels when bypass is active"
       />
@@ -200,7 +182,7 @@ export default class ListLayerDetail extends ListItem {
         callback={this.update.bind(this)} useShorts={this.props.useShorts} showButtons={this.props.showButtons} showLabels={this.props.showLabels} showTooltips={this.props.showTooltips} showInputs={this.props.showInputs}
         description="Mixmode used for all channels when bypass is active"
       />
-      <PanelList name="Channels" short="Chn"
+      <PanelList name="Channels" short="Chn" tabed={true}
         target="channels"
         value={this.state.channels}
         controller={this.props.channels}
@@ -220,11 +202,10 @@ export default class ListLayerDetail extends ListItem {
       <PanelSlider name="Dry/Wet" short="D/W"
         target="drywet"
         value={this.state.drywet}
-        relative={true}
         callback={this.update.bind(this)} useShorts={this.props.useShorts} showButtons={this.props.showButtons} showLabels={this.props.showLabels} showTooltips={this.props.showTooltips} showInputs={this.props.showInputs}
         description="Blends between dry and effected signal"
       />
-      <PanelList name="Effects" short="Efx"
+      <PanelList name="Effects" short="Efx" tabed={true}
         target="inserts"
         value={this.state.inserts}
         template={ListEffect} overview={ListEffectOverview} default={this.state.defaults.effect} //we are here

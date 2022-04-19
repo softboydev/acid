@@ -1,10 +1,12 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import App from './App';
+import React from "react"
+import ReactDOM from "react-dom";
+import UI from "./js/UI"
+import Acid from "./js/Acid"
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <UI />
+    <Acid />
   </React.StrictMode>,
   document.getElementById('root')
 );

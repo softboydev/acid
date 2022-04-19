@@ -13,6 +13,7 @@ import {Text,Help} from "../../atoms/atoms.js"
 export default class ListChannelOverview extends ListItem {
   render() {
     return (
+      <React.Fragment>
       <tr>
       <td>
       {this.props.useShort &&
@@ -22,14 +23,10 @@ export default class ListChannelOverview extends ListItem {
         <Text callback={this.update.bind(this,"short")} max={3} value={this.state.short}/>
       }
       </td>
-      {(this.props.showButtons || this.props.showTooltips) &&
-        <td>
-          {this.props.showTooltips &&
-          <Help description="A channel is used by all layers to pipe their generators to the render engine"/>
-          }
-        </td>
-      }
+
       </tr>
+      <td></td>
+      </React.Fragment>
     );
   }
 }
