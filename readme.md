@@ -382,6 +382,7 @@ The mixer has a channel for every channel defined in the channels sections. Each
     - **SUB** Substract - Substract value from the mix
     - **MLT** Multiply - Multiplys mix by value (inverted as we are using values between 0 and 1)
     - **DIV** Divide - Divides mix by value (inverted as we are using values between 0 and 1)
+    - LOGICAL MIXMODES!!!
 
 #### Effects
 

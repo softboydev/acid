@@ -25,8 +25,8 @@ class UI extends React.Component {
       settings:{ //global settings
         ui:{ //settings for the ui
           preferences: { //Stores UI Preferences
-            useShorts: true, //Shortcuts
-            showTooltips: true, //Tooltips
+            useShorts: false, //Shortcuts
+            showTooltips: false, //Tooltips
             showLabels: true, //Labels
             showButtons: true, //Buttons
             showInputs: true
@@ -89,10 +89,7 @@ class UI extends React.Component {
           mixer: true, //if the mixer is to be bypassed and global send is to be used instead
           send: 1, //global send used in bypass mode
           mix: 0, //global mixmode used in bypass mixmode
-          channels: {
-            selected: -1,
-            list: []
-          }, //array of all channel settings
+          channels: [], //array of all channel settings
           effects: true, //bypasses all effects
           drywet: 1, //mixes between effects
           inserts: {
@@ -128,8 +125,36 @@ class UI extends React.Component {
         midis: [] //list of all midi messages we listen to
       },
       channels: {
-        list: [],
-        selected: -1
+        selected: -1,
+        list: [
+          {
+            id:0,
+            short:"R",
+            label: "Red", //uilabel
+            min: 0, //minimum value
+            max: 1, //max value
+            mod: 1, //allowed mod between min and max
+            clipping: 0 //clipping mode
+          },
+          {
+            id:1,
+            short:"G",
+            label: "Green", //uilabel
+            min: 0, //minimum value
+            max: 1, //max value
+            mod: 1, //allowed mod between min and max
+            clipping: 0 //clipping mode
+          },
+          {
+            id:2,
+            short:"B",
+            label: "Blue", //uilabel
+            min: 0, //minimum value
+            max: 1, //max value
+            mod: 1, //allowed mod between min and max
+            clipping: 0 //clipping mode
+          },
+        ]
       },
       layers: {
         list: [],
@@ -209,76 +234,38 @@ class UI extends React.Component {
       <main>
       <LayoutTabs tabs="left" tab={this.state.tabs.left} select={(tabs,tab) => this.tab(tabs,tab)} >
         <LayoutTab tab={0} tabs={this.state.tabs.left} name="Settings" short="Set">
-          <PanelTable name="Settings" short="SET" useShorts={this.shorts()}>
-            <PanelSection name="UI/UX" short="UIX" useShorts={this.shorts()}>
-              <PanelToggle name="Shortcuts" short="Cut"
-                target="settings.ui.preferences.useShorts"
-                value={this.state.settings.ui.preferences.useShorts}
-                callback={this.update.bind(this)} useShorts={this.shorts()} showTooltips={this.tips()}  showInputs={this.inputs()}
-                description="Toggles the usage of abbreviations"
-              />
-              <PanelToggle name="Tooltips" short="Tip"
-                target="settings.ui.preferences.showTooltips"
-                value={this.state.settings.ui.preferences.showTooltips}
-                callback={this.update.bind(this)} useShorts={this.shorts()} showTooltips={this.tips()}  showInputs={this.inputs()}
-                description="Toggles the display of tooltips"
-              />
-              <PanelToggle name="Labels" short="Lbl"
-                target="settings.ui.preferences.showLabels"
-                value={this.state.settings.ui.preferences.showLabels}
-                callback={this.update.bind(this)} useShorts={this.shorts()} showTooltips={this.tips()}  showInputs={this.inputs()}
-                description="Toggles the usage of labels"
-              />
-              <PanelToggle name="Buttons" short="Btn"
-                target="settings.ui.preferences.showButtons"
-                value={this.state.settings.ui.preferences.showButtons}
-                callback={this.update.bind(this)} useShorts={this.shorts()} showTooltips={this.tips()}  showInputs={this.inputs()}
-                description="Toggles the usage of buttons"
-              />
-              <PanelToggle name="Inputs" short="Inp"
-                target="settings.ui.preferences.showInputs"
-                value={this.state.settings.ui.preferences.showInputs}
-                callback={this.update.bind(this)} useShorts={this.shorts()} showTooltips={this.tips()}  showInputs={this.inputs()}
-                description="Toggles the usage of direct inputs"
-              />
-            </PanelSection>
-            <PanelSection name="Clock" short="CLK" useShorts={this.shorts()}>
-              <PanelToggle name="Recieve Clock" short="REC"
-                target="settings.clock.recieve"
-                value={this.state.settings.clock.recieve}
-                callback={this.update.bind(this)} useShorts={this.shorts()} showTooltips={this.tips()}  showInputs={this.inputs()}
-                description="Toggles recieiving external MIDI clock"
-              />
-              <PanelToggle name="Send Clock" short="SND"
-                target="settings.clock.send"
-                value={this.state.settings.clock.send}
-                callback={this.update.bind(this)} useShorts={this.shorts()} showTooltips={this.tips()}  showInputs={this.inputs()}
-                description="Toggles sending MIDI clock"
-              />
-              <PanelSlider name="BPM" short="Bpm"
-                target="settings.clock.bpm"
-                value={this.state.settings.clock.bpm}
-                min={10} max={600} relative={false}
-                callback={this.update.bind(this)} useShorts={this.shorts()} showButtons={this.buttons()} showLabels={this.labels()} showTooltips={this.tips()} showInputs={this.inputs()}
-                description="Sets the desired bpm to use as clocking"
-              />
-            </PanelSection>
-          </PanelTable>
+          <PanelToggle name="Shortcuts" short="Cut"
+            target="settings.ui.preferences.useShorts"
+            value={this.state.settings.ui.preferences.useShorts}
+            callback={this.update.bind(this)} useShorts={this.shorts()} showTooltips={this.tips()}  showInputs={this.inputs()}
+            description="Toggles the usage of abbreviations"
+          />
+          <PanelToggle name="Tooltips" short="Tip"
+            target="settings.ui.preferences.showTooltips"
+            value={this.state.settings.ui.preferences.showTooltips}
+            callback={this.update.bind(this)} useShorts={this.shorts()} showTooltips={this.tips()}  showInputs={this.inputs()}
+            description="Toggles the display of tooltips"
+          />
+          <PanelToggle name="Labels" short="Lbl"
+            target="settings.ui.preferences.showLabels"
+            value={this.state.settings.ui.preferences.showLabels}
+            callback={this.update.bind(this)} useShorts={this.shorts()} showTooltips={this.tips()}  showInputs={this.inputs()}
+            description="Toggles the usage of labels"
+          />
+          <PanelToggle name="Buttons" short="Btn"
+            target="settings.ui.preferences.showButtons"
+            value={this.state.settings.ui.preferences.showButtons}
+            callback={this.update.bind(this)} useShorts={this.shorts()} showTooltips={this.tips()}  showInputs={this.inputs()}
+            description="Toggles the usage of buttons"
+          />
+          <PanelToggle name="Inputs" short="Inp"
+            target="settings.ui.preferences.showInputs"
+            value={this.state.settings.ui.preferences.showInputs}
+            callback={this.update.bind(this)} useShorts={this.shorts()} showTooltips={this.tips()}  showInputs={this.inputs()}
+            description="Toggles the usage of direct inputs"
+          />
         </LayoutTab>
-        <LayoutTab tab={1} tabs={this.state.tabs.left} name="Outputs" short="Out" useShorts={this.shorts()}>
-          <PanelTable name="Outputs" short="Out" useShorts={this.shorts()}>
-            <PanelSection name="Windows" short="Win" useShorts={this.shorts()}>
-              <PanelList name="Windows" short="Win"
-                target="outputs.windows"
-                value={this.state.outputs.windows}
-                template={ListWindow} overview={ListWindowOverview} default={this.state.defaults.window} //we are here
-                callback={this.update.bind(this)} useShorts={this.shorts()} showButtons={this.buttons()} showLabels={this.labels()} showTooltips={this.tips()} showInputs={this.inputs()}
-                description="List of all output windows. Create and destroy them here as well."
-              />
-            </PanelSection>
-          </PanelTable>
-        </LayoutTab>
-        <LayoutTab tab={2} tabs={this.state.tabs.left} name="Channels" short="Chn" useShorts={this.shorts()}>
+        <LayoutTab tab={1} tabs={this.state.tabs.left} name="Channels" short="Chn" useShorts={this.shorts()}>
           <PanelTable name="Channels" short="Chn" useShorts={this.shorts()}>
               <PanelList name="Channels" short="Ch"
                 target="channels"
@@ -289,21 +276,25 @@ class UI extends React.Component {
               />
           </PanelTable>
         </LayoutTab>
+        <LayoutTab tab={2} tabs={this.state.tabs.left} name="Matrix" short="Mrx" useShorts={this.shorts()}>
+          Modmatrix
+        </LayoutTab>
       </LayoutTabs>
       <LayoutTabs tabs="right" tab={this.state.tabs.right} select={(tabs,tab) => this.tab(tabs,tab)} >
-        <LayoutTab tab={0} tabs={this.state.tabs.right} name="Channels" short="Chn" useShorts={this.shorts()}>
-          <PanelTable name="Layers" short="Lay" useShorts={this.shorts()}>
-              <PanelList name="Layers" short="Lay"
-                target="layers"
-                value={this.state.layers} channels={this.state.channels}
-                template={ListLayer} overview={ListLayerOverview} default={this.state.defaults.layer} //we are here
-                callback={this.update.bind(this)} useShorts={this.shorts()} showButtons={this.buttons()} showLabels={this.labels()} showTooltips={this.tips()} showInputs={this.inputs()}
-                description="List of all layers. Click on one to select for editing."
-              />
-          </PanelTable>
+        <LayoutTab tab={0} tabs={this.state.tabs.right} name="Layers" short="Lay" useShorts={this.shorts()}>
+            <PanelList name="Layers" short="Lay"
+              target="layers"
+              value={this.state.layers} channels={this.state.channels}
+              template={ListLayer} overview={ListLayerOverview} default={this.state.defaults.layer} //we are here
+              callback={this.update.bind(this)} useShorts={this.shorts()} showButtons={this.buttons()} showLabels={this.labels()} showTooltips={this.tips()} showInputs={this.inputs()}
+              description="List of all layers. Click on one to select for editing."
+            />
         </LayoutTab>
-        <LayoutTab tab={1} tabs={this.state.tabs.right} name="Channels" short="Chn" useShorts={this.shorts()}>
-          Test
+        <LayoutTab tab={1} tabs={this.state.tabs.right} name="Sources" short="Src" useShorts={this.shorts()}>
+          Sources
+        </LayoutTab>
+        <LayoutTab tab={2} tabs={this.state.tabs.right} name="Modifiers" short="Mod" useShorts={this.shorts()}>
+          Modifiers
         </LayoutTab>
       </LayoutTabs>
       </main>

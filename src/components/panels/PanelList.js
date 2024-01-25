@@ -153,7 +153,7 @@ export default class PanelList extends React.Component {
         </td>
         {this.selectable() &&
           <td>
-            <Button className="primary" callback={this.select.bind(this,n)} text="Edt" active={n.id == this.state.selected}/><br></br>
+            <Button className="primary" callback={this.select.bind(this,n)} icon="!" active={n.id == this.state.selected}/><br></br>
           </td>
         }
       </tr>
