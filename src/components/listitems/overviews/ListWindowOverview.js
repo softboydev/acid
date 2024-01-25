@@ -13,6 +13,7 @@ import {Text,Help} from "../../atoms/atoms.js"
 export default class ListWindowOverview extends ListItem {
   render() {
     return (
+      <React.Fragment>
       <tr>
       <td>
       {this.props.useShort &&
@@ -22,16 +23,9 @@ export default class ListWindowOverview extends ListItem {
         <Text callback={this.update.bind(this,"short")} max={3} value={this.state.short}/>
       }
       </td>
-      <td></td>
-      <td></td>
-      {(this.props.showButtons || this.props.showTooltips) &&
-        <td>
-          {this.props.showTooltips &&
-          <Help description="Represents a render window instance"/>
-          }
-        </td>
-      }
       </tr>
+      <td></td>
+      </React.Fragment>
     );
   }
 }

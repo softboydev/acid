@@ -24,9 +24,9 @@ export default class PanelToggle extends React.Component {
   render() {
     return (
       <tr>
-        <td>
+        <th>
           <Nametag name={this.props.name} short={this.props.short} useShorts={this.props.useShorts}/>
-        </td>
+        </th>
         <td>
           <Text callback={this.update.bind(this)} max={this.props.max || 30} value={this.props.value}/>
         </td>
@@ -36,7 +36,7 @@ export default class PanelToggle extends React.Component {
         </td>
         }
         {(this.props.showButtons || this.props.showTooltips) &&
-        <td>
+        <td class="left">
           {this.props.showTooltips &&
           <Help description={this.props.description}/>
           }

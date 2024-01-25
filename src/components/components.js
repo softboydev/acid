@@ -20,6 +20,10 @@ import {
   ListSend,
   ListSendOverview
 } from './listitems/listitems.js';
+import {
+  LayoutTabs,
+  LayoutTab
+} from './layouts/layouts.js';
 
 export {
   PanelSlider,
@@ -37,5 +41,7 @@ export {
   ListWindow,
   ListChannel,
   ListEffect,
-  ListEffectOverview
+  ListEffectOverview,
+  LayoutTabs,
+  LayoutTab
 }

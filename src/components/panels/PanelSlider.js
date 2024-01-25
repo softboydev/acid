@@ -62,7 +62,7 @@ export default class PanelSlider extends React.Component {
         </td>
         }
         {(this.props.showButtons || this.props.showTooltips) &&
-        <td>
+        <td class="left oneline">
           {this.props.showTooltips &&
           <Help description={this.props.description}/>
           }

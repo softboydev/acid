@@ -382,6 +382,7 @@ The mixer has a channel for every channel defined in the channels sections. Each
     - **SUB** Substract - Substract value from the mix
     - **MLT** Multiply - Multiplys mix by value (inverted as we are using values between 0 and 1)
     - **DIV** Divide - Divides mix by value (inverted as we are using values between 0 and 1)
+    - LOGICAL MIXMODES!!!
 
 #### Effects
 
@@ -476,17 +477,31 @@ The Modulation section contains all modulation sources for the modmatrix. It cur
 
 
 
-Confirm before deletion and clear!
+Confirm before deletion and clear and prompt on creation
 
 Dropdown Selection
 
-Settings in extra window with selection of defaults
+custom icons
 
 Layergroups
 
 Different modules for different generators
 
-Sliders have wrong init values
+EYESY Critter & Guitari Render basically stamps
+
+automated Drift like in sharedacid
+
+Add feedback mode like old videosynth with distance and movement automation
+
+skew and pan image by manipulating x and y data scale
+
+offset x values by n each row to create screen like effect
+
+m8 interface
+
+stand alone slider not working in non-relative mode
+
+
 
 #### Bitmaps, Multichannel Bitmaps, Animations, Waveshapes and Wavetables
 

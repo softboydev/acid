@@ -13,7 +13,7 @@ import {Toggle,Slider,Text,Help} from "../../atoms/atoms.js"
 export default class ListLayerOverviw extends ListItem {
   render() {
     return (
-      <tr>
+      <React.Fragment>
       <td>
       {this.props.useShort &&
         <Text callback={this.update.bind(this,"label")} max={30} value={this.state.label}/>
@@ -23,19 +23,14 @@ export default class ListLayerOverviw extends ListItem {
       }
       </td>
       <td>
-        <Toggle callback={this.update.bind(this,"enabled")} value={this.state.enabled}/>
-      </td>
-      <td>
-        <Slider min={0} max={999} step={1} relative={true} callback={this.update.bind(this,"opacity")} value={this.state.opacity}/>
-      </td>
-      {(this.props.showButtons || this.props.showTooltips) &&
         <td>
-          {this.props.showTooltips &&
-          <Help description="Rename, change visibility and opacity from here, click edit for all parameters"/>
-          }
+          <Toggle callback={this.update.bind(this,"enabled")} value={this.state.enabled}/>
         </td>
-      }
-      </tr>
+        <td>
+          <Slider callback={this.update.bind(this,"opacity")} value={this.state.opacity}/>
+        </td>
+      </td>
+      </React.Fragment>
     );
   }
 }

@@ -9,7 +9,7 @@ export default class Number extends React.Component {
   }
   render() {
     return (
-      <input type="number" min={this.props.min} max={this.props.max} step={this.props.step} value={Math.round(this.props.relative ? this.props.min + this.props.value * (this.props.max - this.props.min) : this.props.value)} onChange={(e)=>{this.props.callback(this.props.relative ? (e.target.value - this.props.min) / (this.props.max - this.props.min) : Number(e.target.value))}}></input>
+      <input type="number" min={this.props.min} max={this.props.max} step={this.props.step} value={Math.round(this.props.relative ? this.props.min + this.props.value * (this.props.max - this.props.min) : this.props.value)} onChange={(e)=>{this.props.callback(this.props.relative ? (e.target.value - this.props.min) / (this.props.max - this.props.min) : parseInt(e.target.value))}}></input>
     );
   }
 }
